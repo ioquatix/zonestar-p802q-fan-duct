@@ -105,6 +105,7 @@ module turbine() {
 
 //turbine_shape();
 //wheel();
+extruder();
 scale([-1, 1, 1]) turbine();
 //color("red") vent_fins();
 //color("blue") vents();
