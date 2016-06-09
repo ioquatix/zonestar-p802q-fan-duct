@@ -1,9 +1,11 @@
 
 use <intake.scad>
 
-$fn=16;
+//$fn=32;
+$fa=5;
+$fs=0.1;
 
-outer_radius = 30;
+outer_radius = 25;
 inner_radius = 15;
 outer_height = 5;
 
@@ -51,6 +53,7 @@ module wheel_slope() {
 	slope_height = outer_height - inner_height;
 	
 	translate([0, 0, outer_height]) scale([1, 1, -1]) cylinder(h=slope_height,r1=outer_radius,r2=inner_radius);
+	translate([0, 0, outer_height]) cylinder(h=10,r=outer_radius);
 }
 
 module fan_duct() {
@@ -61,7 +64,7 @@ module fan_duct() {
 }
 
 module turbine_shape() {
-	translate([0, 0, thickness]) difference() {
+	render() translate([0, 0, thickness]) difference() {
 		union() {
 			wheel();
 			fan_duct();
