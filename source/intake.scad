@@ -29,7 +29,7 @@ module fan_intake() {
 				translate([15, 0, 10]) rotate(90, [-1, 0, 0]) cylinder(h=15,r=10);
 				translate([5, 0, 0]) cube([20, 15, 10]);
 			}
-			cube([1, 10, 10/2]);
+			cube([1, 11, 10/2]);
 		}
 	}
 }
