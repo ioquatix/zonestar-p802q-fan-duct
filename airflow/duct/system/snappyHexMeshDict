@@ -140,11 +140,11 @@ castellatedMeshControls
 
     refinementRegions
     {
-        turbine.stl
-        {
-            mode distance;
-            levels ((2 0.002));
-        }
+        // turbine.stl
+        // {
+        //     mode distance;
+        //     levels ((2 0.002));
+        // }
     }
 
     resolveFeatureAngle 30;
