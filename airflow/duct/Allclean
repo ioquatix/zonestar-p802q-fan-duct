@@ -9,6 +9,7 @@ rm -f ./*.obj
 rm -rf constant/extendedFeatureEdgeMesh
 rm -rf constant/triSurface/*.eMesh
 rm -rf constant/polyMesh
+rm -rf fluentInterface
 
 cleanCase
 
