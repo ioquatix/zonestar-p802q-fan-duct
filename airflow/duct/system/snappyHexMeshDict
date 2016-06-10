@@ -216,7 +216,7 @@ addLayersControls
     // Per final patch (so not geometry!) the layer information
     layers
     {
-        "turbine_.*"
+        turbine
         {
             nSurfaceLayers 1;
         }
