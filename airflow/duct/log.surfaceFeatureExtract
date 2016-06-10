@@ -1,0 +1,136 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  3.0.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : 3.0.x-1c517d6c8485
+Exec   : surfaceFeatureExtract
+Date   : Jun 11 2016
+Time   : 01:04:06
+Host   : "beemo"
+PID    : 15331
+Case   : /home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Reading surfaceFeatureExtractDict
+
+Surface            : "turbine.stl"
+
+
+Feature line extraction is only valid on closed manifold surfaces.
+Statistics:
+Triangles    : 4374
+Vertices     : 2171
+Bounding Box : (-0.027 -0.027 0) (0.027 0.042 0.07)
+
+
+Constructing feature set from included angle 150
+Selecting edges purely based on geometric tests: no
+
+Initial feature set:
+    feature points : 292
+    feature edges  : 2028
+    of which
+        region edges   : 0
+        external edges : 1138
+        internal edges : 890
+
+
+Final feature set:
+    points : 1869
+    of which
+        convex             : 47
+        concave            : 56
+        mixed              : 189
+        non-feature        : 1577
+    edges  : 2028
+    of which
+        external edges     : 1138
+        internal edges     : 890
+        flat edges         : 0
+        open edges         : 0
+        multiply connected : 0
+
+Writing extendedFeatureEdgeMesh to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine.extendedFeatureEdgeMesh"
+
+Writing extendedEdgeMesh components to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine"
+Writing convex feature points to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine_convexFeaturePts.obj"
+Writing concave feature points to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine_concaveFeaturePts.obj"
+Writing mixed feature points to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine_mixedFeaturePts.obj"
+Writing mixed feature point structure to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine_mixedFeaturePtsStructure.obj"
+Writing external edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine_externalEdges.obj"
+Writing internal edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine_internalEdges.obj"
+Writing flat edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine_flatEdges.obj"
+Writing open edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine_openEdges.obj"
+Writing multiple edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine_multipleEdges.obj"
+Writing region edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine_regionEdges.obj"
+Writing edge directions to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/turbine_edgeDirections.obj"
+
+Writing featureEdgeMesh to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/triSurface/turbine.eMesh"
+
+Surface            : "intake.stl"
+
+
+Feature line extraction is only valid on closed manifold surfaces.
+Statistics:
+Triangles    : 12
+Vertices     : 8
+Bounding Box : (0.005 0.026 0.011) (0.025 0.041 0.021)
+
+
+Constructing feature set from included angle 150
+Selecting edges purely based on geometric tests: no
+
+Initial feature set:
+    feature points : 8
+    feature edges  : 12
+    of which
+        region edges   : 0
+        external edges : 12
+        internal edges : 0
+
+
+Final feature set:
+    points : 8
+    of which
+        convex             : 8
+        concave            : 0
+        mixed              : 0
+        non-feature        : 0
+    edges  : 12
+    of which
+        external edges     : 12
+        internal edges     : 0
+        flat edges         : 0
+        open edges         : 0
+        multiply connected : 0
+
+Writing extendedFeatureEdgeMesh to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake.extendedFeatureEdgeMesh"
+
+Writing extendedEdgeMesh components to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake"
+Writing convex feature points to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake_convexFeaturePts.obj"
+Writing concave feature points to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake_concaveFeaturePts.obj"
+Writing mixed feature points to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake_mixedFeaturePts.obj"
+Writing mixed feature point structure to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake_mixedFeaturePtsStructure.obj"
+Writing external edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake_externalEdges.obj"
+Writing internal edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake_internalEdges.obj"
+Writing flat edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake_flatEdges.obj"
+Writing open edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake_openEdges.obj"
+Writing multiple edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake_multipleEdges.obj"
+Writing region edges to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake_regionEdges.obj"
+Writing edge directions to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/extendedFeatureEdgeMesh/intake_edgeDirections.obj"
+
+Writing featureEdgeMesh to "/home/samuel/Documents/Design/zonestar-p802q-fan-duct/airflow/duct/constant/triSurface/intake.eMesh"
+
+ExecutionTime = 0.06 s  ClockTime = 0 s
+
+End
+
