@@ -40,6 +40,13 @@ solvers
     }
 }
 
+potentialFlow
+{
+    nNonOrthogonalCorrectors 10;
+    PhiRefCell 0; 
+    PhiRefValue 0;
+}
+
 PISO
 {
     nCorrectors     2;
