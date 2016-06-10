@@ -5,7 +5,7 @@ use <intake.scad>
 $fa=5;
 $fs=0.1;
 
-outer_radius = 25;
+outer_radius = 26;
 inner_radius = 15;
 outer_height = 5;
 
@@ -112,3 +112,8 @@ extruder();
 scale([-1, 1, 1]) turbine();
 //color("red") vent_fins();
 //color("blue") vents();
+
+// Air intake.
+//translate([0, 26, 0]) {
+//	color("blue") fan_opening();
+//}

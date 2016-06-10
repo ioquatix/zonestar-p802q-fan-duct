@@ -1,0 +1,86 @@
+solid intake
+ facet normal -0 0 1
+  outer loop
+   vertex 0.005 0.041 0.021
+   vertex 0.025 0.026 0.021
+   vertex 0.025 0.041 0.021
+  endloop
+ endfacet
+ facet normal 0 0 1
+  outer loop
+   vertex 0.025 0.026 0.021
+   vertex 0.005 0.041 0.021
+   vertex 0.005 0.026 0.021
+  endloop
+ endfacet
+ facet normal 0 0 -1
+  outer loop
+   vertex 0.005 0.026 0.011
+   vertex 0.025 0.041 0.011
+   vertex 0.025 0.026 0.011
+  endloop
+ endfacet
+ facet normal -0 0 -1
+  outer loop
+   vertex 0.025 0.041 0.011
+   vertex 0.005 0.026 0.011
+   vertex 0.005 0.041 0.011
+  endloop
+ endfacet
+ facet normal 0 -1 0
+  outer loop
+   vertex 0.005 0.026 0.011
+   vertex 0.025 0.026 0.021
+   vertex 0.005 0.026 0.021
+  endloop
+ endfacet
+ facet normal 0 -1 -0
+  outer loop
+   vertex 0.025 0.026 0.021
+   vertex 0.005 0.026 0.011
+   vertex 0.025 0.026 0.011
+  endloop
+ endfacet
+ facet normal 1 -0 0
+  outer loop
+   vertex 0.025 0.026 0.021
+   vertex 0.025 0.041 0.011
+   vertex 0.025 0.041 0.021
+  endloop
+ endfacet
+ facet normal 1 0 0
+  outer loop
+   vertex 0.025 0.041 0.011
+   vertex 0.025 0.026 0.021
+   vertex 0.025 0.026 0.011
+  endloop
+ endfacet
+ facet normal 0 1 -0
+  outer loop
+   vertex 0.025 0.041 0.011
+   vertex 0.005 0.041 0.021
+   vertex 0.025 0.041 0.021
+  endloop
+ endfacet
+ facet normal 0 1 0
+  outer loop
+   vertex 0.005 0.041 0.021
+   vertex 0.025 0.041 0.011
+   vertex 0.005 0.041 0.011
+  endloop
+ endfacet
+ facet normal -1 0 0
+  outer loop
+   vertex 0.005 0.026 0.011
+   vertex 0.005 0.041 0.021
+   vertex 0.005 0.041 0.011
+  endloop
+ endfacet
+ facet normal -1 -0 0
+  outer loop
+   vertex 0.005 0.041 0.021
+   vertex 0.005 0.026 0.011
+   vertex 0.005 0.026 0.021
+  endloop
+ endfacet
+endsolid intake

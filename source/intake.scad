@@ -45,7 +45,6 @@ module fan_ducting_example() {
 		fan_intake();
 		fan_opening();
 	}
-	//fan_intake_plug();
 }
 
 module fan_mock() {
