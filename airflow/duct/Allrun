@@ -9,6 +9,7 @@ runApplication surfaceFeatureExtract
 runApplication snappyHexMesh -overwrite
 runApplication checkMesh
 
+cp -r initial/* 0/
 runApplication potentialFoam
 runApplication icoFoam
 
