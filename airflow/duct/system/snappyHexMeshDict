@@ -85,11 +85,11 @@ castellatedMeshControls
     (
         {
             file "turbine.extendedFeatureEdgeMesh";
-            level 3;
+            level 4;
         }
         {
             file "intake.extendedFeatureEdgeMesh";
-            level 3;
+            level 4;
         }
     );
 
