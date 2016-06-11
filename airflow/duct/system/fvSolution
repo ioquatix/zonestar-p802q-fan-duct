@@ -31,11 +31,17 @@ solvers
         relTol          0;
     }
 
-    U
+    "(U|T|k|epsilon|R)"
     {
-        solver          smoothSolver;
-        smoother        symGaussSeidel;
-        tolerance       1e-05;
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-6;
+        relTol          0.1;
+    }
+
+    "(U|T|k|epsilon|R)Final"
+    {
+        $U;
         relTol          0;
     }
     

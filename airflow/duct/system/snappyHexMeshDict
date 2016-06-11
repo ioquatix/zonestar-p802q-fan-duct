@@ -29,11 +29,11 @@ addLayers       false;
 // - to 'snap' the mesh boundary to the surface
 geometry
 {
-    turbine.stl
-    {
-        type triSurfaceMesh;
-        name turbine;
-    }
+    // turbine.stl
+    // {
+    //     type triSurfaceMesh;
+    //     name turbine;
+    // }
     
     intake.stl
     {
@@ -83,13 +83,13 @@ castellatedMeshControls
     // This is a featureEdgeMesh, read from constant/triSurface for now.
     features
     (
-        {
-            file "turbine.extendedFeatureEdgeMesh";
-            level 4;
-        }
+        // {
+        //     file "turbine.extendedFeatureEdgeMesh";
+        //     level 4;
+        // }
         {
             file "intake.extendedFeatureEdgeMesh";
-            level 4;
+            level 3;
         }
     );
 
@@ -114,15 +114,15 @@ castellatedMeshControls
                 type patch;
             }
         }
-        turbine
-        {
-            // Surface-wise min and max refinement level
-            level (3 4);
-            patchInfo
-            {
-              type wall;
-            }
-        }
+        // turbine
+        // {
+        //     // Surface-wise min and max refinement level
+        //     level (3 5);
+        //     patchInfo
+        //     {
+        //       type wall;
+        //     }
+        // }
     }
     
     // Region-wise refinement
