@@ -40,6 +40,13 @@ geometry
         type triSurfaceMesh;
         name inlet;
     }
+    // 
+    // boundingBox
+    // {
+    //     type searchableBox;
+    //     min (-0.03 -0.03 -0.02 );
+    //     max ( 0.03 0.045  0.016);
+    // }
 };
 
 
@@ -144,6 +151,11 @@ castellatedMeshControls
         // {
         //     mode distance;
         //     levels ((2 0.002));
+        // }
+        // boundingBox
+        // {
+        //     mode inside;
+        //     levels ((1 2));         // refinement level 2 (1 entry ignored) 
         // }
     }
 

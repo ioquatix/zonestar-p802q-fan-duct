@@ -16,13 +16,15 @@ FoamFile
 
 dimensions      [0 2 -2 0 0 0 0];
 
-internalField   uniform 0;
+internalField uniform 101325; // 1 atmosphere
 
 boundaryField
 {
     inlet
     {
-        type            zeroGradient;
+        // type            zeroGradient;
+        type            fixedValue;
+        value           $internalField;
     }
     turbine
     {
@@ -31,7 +33,7 @@ boundaryField
     outlet
     {
         type            fixedValue;
-        value           uniform 0;
+        value           $internalField;
     }
 }
 
