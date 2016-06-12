@@ -15,38 +15,50 @@ thickness = 1;
 duct_height = 10;
 duct_width = outer_radius - inner_radius;
 vent_size = 5;
-vent_height = inner_height + thickness * 0.46;
+vent_height = inner_height + thickness;
+vent_fin_height = outer_height+thickness*2;
+vent_angle = 8;
 
-module vent_fin(height) {
-	translate([inner_radius-thickness, -4.6, 0]) rotate(10, [0, 0, 1]) cube([5, thickness, height]);
-	translate([inner_radius-thickness+5, -3.7, 0]) rotate(50, [0, 0, 1]) cube([3, thickness, height]);
+module wheel(h=outer_height,r1=inner_radius,r2=outer_radius) {
+	render() difference() {
+		cylinder(h=h,r=r2);
+		cylinder(h=h,r=r1);
+	}
 }
 
-module vent(height) {
-	translate([inner_radius-thickness-1.5, -3.88]) rotate(-12, [0, 1, 0]) rotate(10, [0, 0, 1]) cube([6, 5, height]);
+module vent_fin(height=vent_fin_height) {
+	intersection() {
+		translate([0, 1.5, 0]) wheel(r1=5, r2=6, h=height);
+		union() {
+			translate([6, -3.5, 0]) rotate(70, [0, 0, 1]) cube([10, 2.5, height]);
+			translate([-2, -6, 0]) rotate(10, [0, 0, 1]) cube([10, 5, height]);
+		}
+	}
+}
+
+module vent(height=vent_height) {
+	difference() {
+		translate([-1.5, -4, 0]) rotate(-12, [0, 1, 0]) rotate(10, [0, 0, 1]) cube([8, 5, height]);
+		translate([-4, -4, inner_height + thickness]) cube([10, 8, thickness*2]);
+		vent_fin();
+	}
+}
+
+module vent_positions()
+{
+	for (i = [0:45:360]) {
+		rotate(i, [0, 0, 1]) {
+			translate([inner_radius-thickness, 0, 0]) rotate(vent_angle, [0, 0, 1]) children();
+		}
+	}
 }
 
 module vents() {
-	for (i = [0:45:360]) {
-		rotate(i, [0, 0, 1]) {
-			vent(vent_height);
-		}
-	}
+	vent_positions() vent();
 }
 
 module vent_fins() {
-	for (i = [0:45:360]) {
-		rotate(i, [0, 0, 1]) {
-			vent_fin(inner_height+thickness*2);
-		}
-	}
-}
-
-module wheel() {
-	render() difference() {
-		cylinder(h=outer_height,r=outer_radius);
-		cylinder(h=outer_height,r=inner_radius);
-	}
+	vent_positions() vent_fin();
 }
 
 module wheel_slope() {
@@ -117,3 +129,6 @@ scale([-1, 1, 1]) turbine();
 //translate([0, 26, 0]) {
 //	color("blue") fan_opening();
 //}
+
+//vents();
+//vent_fins();
