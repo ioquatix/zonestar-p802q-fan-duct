@@ -13,5 +13,5 @@ cp -r initial/* 0/
 runApplication potentialFoam
 runApplication pimpleFoam
 
-#runApplication foamMeshToFluent
-#runApplication foamDataToFluent
+runApplication foamMeshToFluent
+runApplication foamDataToFluent
