@@ -75,7 +75,7 @@ PISO
     pRefValue           0;
 }
 
-PIMPLE
+"(SIMPLE|PIMPLE)"
 {
     correctPhi          yes;
     nOuterCorrectors    2;

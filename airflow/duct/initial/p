@@ -28,7 +28,10 @@ boundaryField
     }
     turbine
     {
-        type            zeroGradient;
+        //type            zeroGradient;
+        type            fixedValue;
+        value           $internalField;
+        
     }
     outlet
     {
