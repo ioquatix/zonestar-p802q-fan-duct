@@ -23,14 +23,10 @@ boundaryField
     inlet
     {
         type            zeroGradient;
-        // type            fixedValue;
-        // value           $internalField;
     }
     turbine
     {
         type            zeroGradient;
-        // type            fixedValue;
-        // value           $internalField;
     }
     outlet
     {
