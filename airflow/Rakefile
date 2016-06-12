@@ -1,0 +1,26 @@
+
+# export FOAM_INST_DIR=/opt/OpenFOAM 
+# . ${FOAM_INST_DIR}/OpenFOAM-3.0.x/etc/bashrc
+
+task :convert_to_meters do
+	sh("surfaceTransformPoints", "-scale", "(0.001 0.001  0.001)", "turbine_mm.stl", "turbine.stl")
+	sh("surfaceTransformPoints", "-scale", "(0.001 0.001  0.001)", "intake_mm.stl", "intake.stl")
+end
+
+task :duct => :convert_to_meters do
+	turbine_stl = File.readlines("turbine.stl")
+	intake_stl = File.readlines("intake.stl")
+	
+	turbine_stl.first.replace("solid turbine")
+	turbine_stl.last.replace("endsolid turbine")
+	intake_stl.first.replace("solid intake")
+	intake_stl.last.replace("endsolid intake")
+	
+	File.open("duct/constant/triSurface/turbine.stl", "w") do |file|
+		file.puts turbine_stl
+	end
+	
+	File.open("duct/constant/triSurface/intake.stl", "w") do |file|
+		file.puts intake_stl
+	end
+end

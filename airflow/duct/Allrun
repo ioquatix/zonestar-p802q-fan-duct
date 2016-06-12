@@ -10,7 +10,7 @@ runApplication snappyHexMesh -overwrite
 runApplication checkMesh -allTopology -allGeometry
 
 cp -r initial/* 0/
-runApplication potentialFoam
+# runApplication potentialFoam
 runApplication pimpleFoam
 
 runApplication foamMeshToFluent

@@ -115,7 +115,7 @@ castellatedMeshControls
     {
         inlet
         {
-            level (2 2);
+            level (3 4);
             patchInfo
             {
                 type patch;
@@ -124,7 +124,7 @@ castellatedMeshControls
         turbine
         {
             // Surface-wise min and max refinement level
-            level (2 3);
+            level (3 4);
             patchInfo
             {
               type wall;
@@ -155,7 +155,7 @@ castellatedMeshControls
         boundingBox
         {
             mode inside;
-            levels ((1 2));         // refinement level 2 (1 entry ignored) 
+            levels ((1 2)); // 1st entry ignored
         }
     }
 

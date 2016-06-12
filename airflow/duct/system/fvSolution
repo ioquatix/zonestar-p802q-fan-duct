@@ -19,10 +19,16 @@ solvers
 {
     p
     {
-        solver          PCG;
-        preconditioner  DIC;
-        tolerance       1e-06;
-        relTol          0.05;
+        solver           GAMG;
+        tolerance        1e-7;
+        relTol           0.01;
+
+        smoother         DICGaussSeidel;
+
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 10;
+        agglomerator     faceAreaPair;
+        mergeLevels      1;
     }
 
     pFinal
@@ -31,59 +37,60 @@ solvers
         relTol          0;
     }
 
-    "(U|T|k|epsilon|R)"
+    "(U|k|epsilon)"
     {
-        solver          PBiCG;
-        preconditioner  DILU;
-        tolerance       1e-6;
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-05;
         relTol          0.1;
     }
 
-    "(U|T|k|epsilon|R)Final"
+    "(U|k|epsilon)Final"
     {
         $U;
         relTol          0;
     }
-    
-    Phi
-    {
-        solver GAMG;
-        smoother DIC;
-        cacheAgglomeration on;
-        agglomerator faceAreaPair;
-        nCellsInCoarsestLevel 10;
-        mergeLevels 1;
-
-        tolerance 1e-06;
-        relTol 0.01;
-    }
 }
 
-potentialFlow
+PIMPLE
 {
-    nNonOrthogonalCorrectors 10;
-    PhiRefCell 0; 
-    PhiRefValue 0;
-}
-
-PISO
-{
-    nCorrectors     2;
-    nNonOrthogonalCorrectors 2;
-    
-    pRefCell            0;
-    pRefValue           0;
-}
-
-"(SIMPLE|PIMPLE)"
-{
-    correctPhi          yes;
-    nOuterCorrectors    2;
-    nCorrectors         1;
     nNonOrthogonalCorrectors 0;
-
-    pRefCell            0;
-    pRefValue           0;
+    nCorrectors         2;
 }
+
+// PIMPLE
+// {
+//     nNonOrthogonalCorrectors 0;
+//     nCorrectors          2;
+//     nOuterCorrectors    100;
+//  
+//     residualControl
+//     {
+//         U
+//         {
+//                 tolerance  1e-5;
+//                 relTol      0;
+//         }
+//         p
+//         {
+//                 tolerance  5e-4;
+//                 relTol      0;
+//         }
+//      }
+// }
+//  
+// relaxationFactors
+// {
+//     fields
+//     {
+//         p      0.3;
+//         pFinal   1;
+//     }
+//     equations
+//     {
+//         "U|k|epsilon"     0.3;
+//         "(U|k|epsilon)Final"   1;
+//     }
+// }
 
 // ************************************************************************* //
