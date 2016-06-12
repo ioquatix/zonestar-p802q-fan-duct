@@ -24,7 +24,8 @@ boundaryField
     inlet
     {
         type            fixedValue;
-        value           uniform (0 0 -0.4);
+        // black magic yo, type "(4 cubic feet per minute) / (20mm * 15mm)" into google
+        value           uniform (0 0 -6.3);
     }
     turbine
     {
