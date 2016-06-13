@@ -38,7 +38,7 @@ module vent_fin(height=vent_fin_height) {
 
 module vent(height=vent_height) {
 	difference() {
-		translate([-1.5, -4, 0]) rotate(-12, [0, 1, 0]) rotate(10, [0, 0, 1]) cube([8, 5, height]);
+		translate([-1.5, -4, 0]) rotate(-12, [0, 1, 0]) rotate(10, [0, 0, 1]) cube([8, 2, height]);
 		translate([-4, -4, inner_height + thickness]) cube([10, 8, thickness*2]);
 		vent_fin();
 	}

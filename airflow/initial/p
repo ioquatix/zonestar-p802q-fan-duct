@@ -10,30 +10,27 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volScalarField;
-    object      nut;
+    object      p;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 -1 0 0 0 0];
+dimensions      [0 2 -2 0 0 0 0];
 
-internalField   uniform 0;
+internalField uniform 101325; // 1 atmosphere
 
 boundaryField
 {
-    turbine
-    {
-        type            nutkWallFunction;
-        value           $internalField;
-    }
     inlet
     {
-        type            fixedValue;
-        value           $internalField;
+        type            zeroGradient;
+    }
+    duct
+    {
+        type            zeroGradient;
     }
     outlet
     {
-        type            inletOutlet;
-        inletValue      $internalField;
+        type            fixedValue;
         value           $internalField;
     }
 }

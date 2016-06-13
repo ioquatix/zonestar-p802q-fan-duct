@@ -9,29 +9,33 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    object      p;
+    class       volVectorField;
+    // This is the fluid velocity at the various boundaries
+    object      U;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 -2 0 0 0 0];
+dimensions      [0 1 -1 0 0 0 0];
 
-internalField uniform 101325; // 1 atmosphere
+internalField   uniform (0 0 0);
 
 boundaryField
 {
     inlet
     {
-        type            zeroGradient;
+        type            fixedValue;
+        // black magic yo, type "(4 cubic feet per minute) / (20mm * 15mm)" into google
+        value           uniform (0 0 -6.3);
     }
-    turbine
+    duct
     {
-        type            zeroGradient;
+        type            fixedValue;
+        value           uniform (0 0 0);
     }
     outlet
     {
         type            fixedValue;
-        value           $internalField;
+        value           uniform (0 0 0);
     }
 }
 

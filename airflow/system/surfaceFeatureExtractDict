@@ -14,7 +14,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-turbine.stl
+duct.stl
 {
     // How to obtain raw features (extractFromFile || extractFromSurface)
     extractionMethod    extractFromSurface;

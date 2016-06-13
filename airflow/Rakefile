@@ -3,24 +3,26 @@
 # . ${FOAM_INST_DIR}/OpenFOAM-3.0.x/etc/bashrc
 
 task :convert_to_meters do
-	sh("surfaceTransformPoints", "-scale", "(0.001 0.001  0.001)", "turbine_mm.stl", "turbine.stl")
-	sh("surfaceTransformPoints", "-scale", "(0.001 0.001  0.001)", "intake_mm.stl", "intake.stl")
+	sh("surfaceTransformPoints", "-scale", "(0.001 0.001  0.001)", "../build/duct.stl", "duct_scaled.stl")
+	sh("surfaceTransformPoints", "-scale", "(0.001 0.001  0.001)", "../build/intake.stl", "intake_scaled.stl")
 end
 
-task :duct => :convert_to_meters do
-	turbine_stl = File.readlines("turbine.stl")
-	intake_stl = File.readlines("intake.stl")
+task :constants => :convert_to_meters do
+	duct_stl = File.readlines("duct_scaled.stl")
+	intake_stl = File.readlines("intake_scaled.stl")
 	
-	turbine_stl.first.replace("solid turbine")
-	turbine_stl.last.replace("endsolid turbine")
+	duct_stl.first.replace("solid duct")
+	duct_stl.last.replace("endsolid duct")
 	intake_stl.first.replace("solid intake")
 	intake_stl.last.replace("endsolid intake")
 	
-	File.open("duct/constant/triSurface/turbine.stl", "w") do |file|
-		file.puts turbine_stl
+	File.open("constant/triSurface/duct.stl", "w") do |file|
+		file.puts duct_stl
 	end
 	
-	File.open("duct/constant/triSurface/intake.stl", "w") do |file|
+	File.open("constant/triSurface/intake.stl", "w") do |file|
 		file.puts intake_stl
 	end
 end
+
+task :default => :constants

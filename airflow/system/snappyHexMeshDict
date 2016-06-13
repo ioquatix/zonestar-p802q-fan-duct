@@ -29,10 +29,10 @@ addLayers       true;
 // - to 'snap' the mesh boundary to the surface
 geometry
 {
-    turbine.stl
+    duct.stl
     {
         type triSurfaceMesh;
-        name turbine;
+        name duct;
     }
     intake.stl
     {
@@ -96,7 +96,7 @@ castellatedMeshControls
     features
     (
         {
-            file "turbine.extendedFeatureEdgeMesh";
+            file "duct.extendedFeatureEdgeMesh";
             level 6;
         }
         {
@@ -126,7 +126,7 @@ castellatedMeshControls
                 type patch;
             }
         }
-        turbine
+        duct
         {
             // Surface-wise min and max refinement level
             level (5 6);
@@ -152,7 +152,7 @@ castellatedMeshControls
 
     refinementRegions
     {
-        turbine.stl
+        duct.stl
         {
             mode distance;
             levels ((3 0.003));
@@ -233,7 +233,7 @@ addLayersControls
     // Per final patch (so not geometry!) the layer information
     layers
     {
-        turbine
+        duct
         {
             nSurfaceLayers 1;
         }

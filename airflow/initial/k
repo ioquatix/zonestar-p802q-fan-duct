@@ -20,7 +20,7 @@ internalField uniform 0.02898;
 
 boundaryField
 {
-    turbine
+    duct
     {
         type            kqRWallFunction;
         value           $internalField;
