@@ -1,0 +1,39 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+# Set application name
+application=$(getApplication)
+
+# Get number of processors to run on
+nProcs=$(getNumberOfProcessors)
+
+\rm -rf 0
+
+# Meshing
+\cp system/controlDict.mesh system/controlDict
+\cp system/collapseDict.collapseFaces system/collapseDict
+
+runApplication blockMesh
+runApplication decomposePar
+runApplication surfaceFeatureExtract
+
+runParallel snappyHexMesh $nProcs
+
+# Couldn't get this to run reliably...
+# runParallel collapseEdges $nProcs -collapseFaces -latestTime
+
+runParallel checkMesh $nProcs -allTopology -allGeometry -latestTime
+
+#runApplication snappyHexMesh -overwrite
+# runApplication collapseEdges -collapseFaces -latestTime
+#runApplication checkMesh -allTopology -allGeometry
+
+runApplication reconstructParMesh -latestTime
+
+# Copy the mesh into polyMesh and delete the 2 directory
+\cp -r 2/polyMesh constant
+\rm -rf 2
+

@@ -34,13 +34,11 @@ geometry
         type triSurfaceMesh;
         name turbine;
     }
-    
     intake.stl
     {
         type triSurfaceMesh;
         name inlet;
     }
-    
     boundingBox
     {
         type searchableBox;
@@ -81,8 +79,6 @@ castellatedMeshControls
     // refinement.
     nCellsBetweenLevels 1;
 
-
-
     // Explicit feature edge refinement
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -115,7 +111,7 @@ castellatedMeshControls
     {
         inlet
         {
-            level (3 4);
+            level (2 3);
             patchInfo
             {
                 type patch;
@@ -150,7 +146,7 @@ castellatedMeshControls
         turbine.stl
         {
             mode distance;
-            levels ((2 0.003));
+            levels ((3 0.003));
         }
         boundingBox
         {

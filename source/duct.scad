@@ -46,7 +46,7 @@ module vent(height=vent_height) {
 
 module vent_positions()
 {
-	for (i = [0:45:360]) {
+	for (i = [0:90:360]) {
 		rotate(i, [0, 0, 1]) {
 			translate([inner_radius-thickness, 0, 0]) rotate(vent_angle, [0, 0, 1]) children();
 		}
