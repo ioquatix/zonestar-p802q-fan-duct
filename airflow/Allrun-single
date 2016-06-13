@@ -8,7 +8,6 @@ rm -rf 0
 cp -r initial 0
 
 runApplication blockMesh
-runApplication decomposePar
 runApplication surfaceFeatureExtract
 
 runApplication snappyHexMesh -overwrite
