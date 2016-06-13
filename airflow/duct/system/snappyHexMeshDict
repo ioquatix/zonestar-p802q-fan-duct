@@ -18,7 +18,7 @@ FoamFile
 // Which of the steps to run
 castellatedMesh true;
 snap            true;
-addLayers       false;
+addLayers       true;
 
 
 // Geometry. Definition of all surfaces. All surfaces are of class
@@ -72,12 +72,21 @@ castellatedMeshControls
     // few cells. This setting will cause refinement to stop if <= minimumRefine
     // are selected for refinement. Note: it will at least do one iteration
     // (unless the number of cells to refine is 0)
-    minRefinementCells 0;
+    minRefinementCells 10;
+
+    // Allow a certain level of imbalance during refining
+    // (since balancing is quite expensive)
+    // Expressed as fraction of perfect balance (= overall number of cells /
+    // nProcs). 0=balance always.
+    maxLoadUnbalance 0.10;
+
 
     // Number of buffer layers between different levels.
     // 1 means normal 2:1 refinement restriction, larger means slower
     // refinement.
-    nCellsBetweenLevels 1;
+    nCellsBetweenLevels 3;
+
+
 
     // Explicit feature edge refinement
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,7 +97,7 @@ castellatedMeshControls
     (
         {
             file "turbine.extendedFeatureEdgeMesh";
-            level 4;
+            level 6;
         }
         {
             file "intake.extendedFeatureEdgeMesh";
@@ -120,7 +129,7 @@ castellatedMeshControls
         turbine
         {
             // Surface-wise min and max refinement level
-            level (3 4);
+            level (5 6);
             patchInfo
             {
               type wall;
@@ -151,7 +160,7 @@ castellatedMeshControls
         boundingBox
         {
             mode inside;
-            levels ((1 2)); // 1st entry ignored
+            levels ((1 4)); // 1st entry ignored
         }
     }
 
@@ -186,10 +195,10 @@ snapControls
     //- Relative distance for points to be attracted by surface feature point
     //  or edge. True distance is this factor times local
     //  maximum edge length.
-    tolerance 1.0;
+    tolerance 2.0;
 
     //- Number of mesh displacement relaxation iterations.
-    nSolveIter 300;
+    nSolveIter 30;
 
     //- Maximum number of snapping relaxation iterations. Should stop
     //  before upon reaching a correct mesh.
@@ -197,19 +206,19 @@ snapControls
 
     // Feature snapping
 
-        //- Number of feature edge snapping iterations.
-        //  Leave out altogether to disable.
-        nFeatureSnapIter 10;
+    //- Number of feature edge snapping iterations.
+    //  Leave out altogether to disable.
+    nFeatureSnapIter 10;
 
-        //- Detect (geometric) features by sampling the surface
-        implicitFeatureSnap false;
+    //- Detect (geometric) features by sampling the surface
+    implicitFeatureSnap false;
 
-        //- Use castellatedMeshControls::features
-        explicitFeatureSnap true;
+    //- Use castellatedMeshControls::features
+    explicitFeatureSnap true;
 
-        //- Detect features between multiple surfaces
-        //  (only for explicitFeatureSnap, default = false)
-        multiRegionFeatureSnap true;
+    //- Detect features between multiple surfaces
+    //  (only for explicitFeatureSnap, default = false)
+    multiRegionFeatureSnap true;
 }
 
 
@@ -229,10 +238,9 @@ addLayersControls
             nSurfaceLayers 1;
         }
     }
-
+    
     // Expansion factor for layer mesh
     expansionRatio 1.0;
-
 
     // Wanted thickness of final added cell layer. If multiple layers
     // is the thickness of the layer furthest away from the wall.
@@ -242,24 +250,28 @@ addLayersControls
 
     // Minimum thickness of cell layer. If for any reason layer
     // cannot be above minThickness do not add layer.
-    // See relativeSizes parameter.
-    minThickness 0.25;
+    // Relative to undistorted size of cell outside layer.
+    minThickness 0.1;
 
     // If points get not extruded do nGrow layers of connected faces that are
     // also not grown. This helps convergence of the layer addition process
     // close to features.
+    // Note: changed(corrected) w.r.t 17x! (didn't do anything in 17x)
     nGrow 0;
-
 
     // Advanced settings
 
     // When not to extrude surface. 0 is flat surface, 90 is when two faces
     // are perpendicular
-    featureAngle 30;
+    featureAngle 60;
+
+    // At non-patched sides allow mesh to slip if extrusion direction makes
+    // angle larger than slipFeatureAngle.
+    slipFeatureAngle 30;
 
     // Maximum number of snapping relaxation iterations. Should stop
     // before upon reaching a correct mesh.
-    nRelaxIter 5;
+    nRelaxIter 3;
 
     // Number of smoothing iterations of surface normals
     nSmoothSurfaceNormals 1;
@@ -278,7 +290,9 @@ addLayersControls
     maxThicknessToMedialRatio 0.3;
 
     // Angle used to pick up medial axis points
+    // Note: changed(corrected) w.r.t 17x! 90 degrees corresponds to 130 in 17x.
     minMedianAxisAngle 90;
+
 
     // Create buffer region for new layer terminations
     nBufferCellsNoExtrude 0;
@@ -288,28 +302,13 @@ addLayersControls
     // if it reaches this number of iterations; possibly with an illegal
     // mesh.
     nLayerIter 50;
-
-    // Max number of iterations after which relaxed meshQuality controls
-    // get used. Up to nRelaxIter it uses the settings in meshQualityControls,
-    // after nRelaxIter it uses the values in meshQualityControls::relaxed.
-    nRelaxedIter 20;
 }
-
-
 
 // Generic mesh quality settings. At any undoable phase these determine
 // where to undo.
 meshQualityControls
 {
     #include "meshQualityDict"
-
-    // Optional : some meshing phases allow usage of relaxed rules.
-    // See e.g. addLayersControls::nRelaxedIter.
-    relaxed
-    {
-        //- Maximum non-orthogonality allowed. Set to 180 to disable.
-        maxNonOrtho 75;
-    }
 
     // Advanced
 
@@ -325,15 +324,15 @@ meshQualityControls
 // Write flags
 writeFlags
 (
-    scalarLevels    // write volScalarField with cellLevel for postprocessing
-    layerSets       // write cellSets, faceSets of faces in layer
+    scalarLevels
+    layerSets
     layerFields     // write volScalarField for layer coverage
 );
 
 
 // Merge tolerance. Is fraction of overall bounding box of initial mesh.
 // Note: the write tolerance needs to be higher than this.
-mergeTolerance 1E-6;
+mergeTolerance 1e-6;
 
 
 // ************************************************************************* //

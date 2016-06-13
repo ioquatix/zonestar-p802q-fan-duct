@@ -7,24 +7,18 @@
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
-    version         2.0;
-    format          ascii;
-    class           dictionary;
-    object          meshQualityControls;
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      meshQualityDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-maxNonOrtho         60;
-maxBoundarySkewness 50;
-maxInternalSkewness 10;
-maxConcave          80;
-minVol              1e-20;
-minTetQuality       1e-30;
-minArea             -1;
-minTwist            0.0;
-minDeterminant      0.001;
-minFaceWeight       0.02;
-minVolRatio         0.01;
-minTriangleTwist    -1;
+// Include defaults parameters from master dictionary
+#includeEtc "caseDicts/meshQualityDict"
+
+//- minFaceWeight (0 -> 0.5)
+minFaceWeight 0.02;
+
 
 // ************************************************************************* //
