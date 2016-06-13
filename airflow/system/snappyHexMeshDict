@@ -59,7 +59,7 @@ castellatedMeshControls
     // If local number of cells is >= maxLocalCells on any processor
     // switches from from refinement followed by balancing
     // (current method) to (weighted) balancing before refinement.
-    maxLocalCells 100000;
+    maxLocalCells 200000;
 
     // Overall cell limit (approximately). Refinement will stop immediately
     // upon reaching this number so a refinement level might not complete.
@@ -97,7 +97,7 @@ castellatedMeshControls
     (
         {
             file "duct.extendedFeatureEdgeMesh";
-            level 5;
+            level 4;
         }
         {
             file "intake.extendedFeatureEdgeMesh";
@@ -129,7 +129,7 @@ castellatedMeshControls
         duct
         {
             // Surface-wise min and max refinement level
-            level (3 5);
+            level (3 4);
             patchInfo
             {
               type wall;
