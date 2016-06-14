@@ -20,6 +20,9 @@ castellatedMesh true;
 snap            true;
 addLayers       true;
 
+// Merge tolerance. Is fraction of overall bounding box of initial mesh.
+// Note: the write tolerance needs to be higher than this.
+mergeTolerance 1e-6;
 
 // Geometry. Definition of all surfaces. All surfaces are of class
 // searchableSurface.
@@ -47,8 +50,6 @@ geometry
     }
 };
 
-
-
 // Settings for the castellatedMesh generation.
 castellatedMeshControls
 {
@@ -59,7 +60,7 @@ castellatedMeshControls
     // If local number of cells is >= maxLocalCells on any processor
     // switches from from refinement followed by balancing
     // (current method) to (weighted) balancing before refinement.
-    maxLocalCells 200000;
+    maxLocalCells 300000;
 
     // Overall cell limit (approximately). Refinement will stop immediately
     // upon reaching this number so a refinement level might not complete.
@@ -97,11 +98,11 @@ castellatedMeshControls
     (
         {
             file "duct.extendedFeatureEdgeMesh";
-            level 4;
+            level 5;
         }
         {
             file "intake.extendedFeatureEdgeMesh";
-            level 3;
+            level 2;
         }
     );
 
@@ -118,14 +119,14 @@ castellatedMeshControls
 
     refinementSurfaces
     {
-        inlet
-        {
-            level (2 3);
-            patchInfo
-            {
-                type patch;
-            }
-        }
+        // inlet
+        // {
+        //     level (2 3);
+        //     patchInfo
+        //     {
+        //         type patch;
+        //     }
+        // }
         duct
         {
             // Surface-wise min and max refinement level
@@ -155,7 +156,7 @@ castellatedMeshControls
         duct.stl
         {
             mode distance;
-            levels ((3 0.003));
+            levels ((3 0.005));
         }
         boundingBox
         {
@@ -195,7 +196,7 @@ snapControls
     //- Relative distance for points to be attracted by surface feature point
     //  or edge. True distance is this factor times local
     //  maximum edge length.
-    tolerance 2.0;
+    tolerance 4;
 
     //- Number of mesh displacement relaxation iterations.
     nSolveIter 30;
@@ -240,7 +241,7 @@ addLayersControls
     }
     
     // Expansion factor for layer mesh
-    expansionRatio 1.0;
+    expansionRatio 0.5;
 
     // Wanted thickness of final added cell layer. If multiple layers
     // is the thickness of the layer furthest away from the wall.
@@ -328,11 +329,5 @@ writeFlags
     layerSets
     layerFields     // write volScalarField for layer coverage
 );
-
-
-// Merge tolerance. Is fraction of overall bounding box of initial mesh.
-// Note: the write tolerance needs to be higher than this.
-mergeTolerance 1e-6;
-
 
 // ************************************************************************* //

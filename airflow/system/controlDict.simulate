@@ -22,7 +22,7 @@ startFrom       startTime;
 startTime       0;
 stopAt          endTime;
 endTime         0.1;
-deltaT          0.0001;
+deltaT          0.00001;
 
 writeControl    adjustableRunTime;
 writeInterval   0.0001;
@@ -34,8 +34,8 @@ writePrecision  7;
 
 writeCompression uncompressed;
 
-timeFormat      fixed;
-timePrecision   5;
+timeFormat      general;
+timePrecision   6;
 
 runTimeModifiable yes;
 adjustTimeStep    yes;

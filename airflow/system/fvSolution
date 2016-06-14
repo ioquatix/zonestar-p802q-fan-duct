@@ -19,30 +19,32 @@ solvers
 {
     p
     {
-        solver           GAMG;
-        tolerance        1e-7;
-        relTol           0.01;
-
-        smoother         DICGaussSeidel;
-
-        cacheAgglomeration true;
+        solver          GAMG;
+        tolerance       1e-07;
+        relTol          0.1;
+        smoother        DICGaussSeidel;
+        nPreSweeps      0;
+        nPostSweeps     2;
+        cacheAgglomeration on;
+        agglomerator    faceAreaPair;
         nCellsInCoarsestLevel 10;
-        agglomerator     faceAreaPair;
-        mergeLevels      1;
+        mergeLevels     1;
     }
 
     pFinal
     {
         $p;
+        tolerance       1e-6;
         relTol          0;
-    }
+    };
 
     "(U|k|epsilon)"
     {
-        solver          smoothSolver;
-        smoother        symGaussSeidel;
-        tolerance       1e-05;
-        relTol          0.1;
+        solver           smoothSolver;
+        smoother         GaussSeidel;
+        tolerance        1e-5;
+        relTol           0.1;
+        nSweeps          1;
     }
 
     "(U|k|epsilon)Final"
@@ -52,45 +54,53 @@ solvers
     }
 }
 
-PIMPLE
-{
-    nNonOrthogonalCorrectors 0;
-    nCorrectors         2;
-}
-
 // PIMPLE
 // {
 //     nNonOrthogonalCorrectors 0;
-//     nCorrectors          2;
-//     nOuterCorrectors    100;
-//  
-//     residualControl
-//     {
-//         U
-//         {
-//                 tolerance  1e-5;
-//                 relTol      0;
-//         }
-//         p
-//         {
-//                 tolerance  5e-4;
-//                 relTol      0;
-//         }
-//      }
+//     nCorrectors         2;
 // }
-//  
-// relaxationFactors
-// {
-//     fields
-//     {
-//         p      0.3;
-//         pFinal   1;
-//     }
-//     equations
-//     {
-//         "U|k|epsilon"     0.3;
-//         "(U|k|epsilon)Final"   1;
-//     }
-// }
+
+PIMPLE
+{
+    // Number of times to solve P:
+    nNonOrthogonalCorrectors 0;
+    nCorrectors          1;
+    
+    // Number of times to repeat PIMPLE:
+    nOuterCorrectors    10;
+ 
+    residualControl
+    {
+        U
+        {
+            tolerance  1e-5;
+            relTol     0;
+        }
+        p
+        {
+            tolerance  5e-4;
+            relTol     0;
+        }
+    }
+}
+ 
+relaxationFactors
+{
+    fields
+    {
+        p 0.7;
+        pFinal 1;
+    }
+    equations
+    {
+        "U|k|epsilon" 0.7;
+        "(U|k|epsilon)Final" 1;
+    }
+}
+
+cache
+{
+    grad(U);
+}
 
 // ************************************************************************* //

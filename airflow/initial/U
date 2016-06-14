@@ -23,19 +23,18 @@ boundaryField
 {
     inlet
     {
-        type            fixedValue;
+        type fixedValue;
         // black magic yo, type "(4 cubic feet per minute) / (20mm * 15mm)" into google
-        value           uniform (0 0 -6.3);
+        value uniform (0 0 -6.3);
     }
     duct
     {
-        type            fixedValue;
-        value           uniform (0 0 0);
+        type fixedValue;
+        value uniform (0 0 0);
     }
     outlet
     {
-        type            fixedValue;
-        value           uniform (0 0 0);
+        type zeroGradient;
     }
 }
 
