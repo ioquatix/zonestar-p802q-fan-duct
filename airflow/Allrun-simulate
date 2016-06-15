@@ -28,6 +28,7 @@ cp -r initial 0
 runApplication decomposePar -force
 
 # Run
+runParallel potentialFoam $nProcs
 runParallel $application $nProcs
 
 # Reconstruct

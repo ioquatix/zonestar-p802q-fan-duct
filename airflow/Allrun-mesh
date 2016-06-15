@@ -34,6 +34,6 @@ runParallel checkMesh $nProcs -allTopology -allGeometry -latestTime
 runApplication reconstructParMesh -latestTime
 
 # Copy the mesh into polyMesh and delete the 3 directory
-\cp -r 3/polyMesh constant
-\rm -rf 3
+\cp -r 2/polyMesh constant
+\rm -rf 2
 

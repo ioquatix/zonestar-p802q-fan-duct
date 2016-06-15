@@ -18,7 +18,7 @@ FoamFile
 // Which of the steps to run
 castellatedMesh true;
 snap            true;
-addLayers       true;
+addLayers       false;
 
 // Merge tolerance. Is fraction of overall bounding box of initial mesh.
 // Note: the write tolerance needs to be higher than this.
@@ -45,8 +45,15 @@ geometry
     boundingBox
     {
         type searchableBox;
-        min (-0.01 -0.01 -0.02 );
-        max ( 0.01 0.01  0.016);
+        min (-0.015 -0.015 -0.02 );
+        max ( 0.015 0.015  0.016);
+    }
+    innerVortexRegion
+    {
+        type searchableCylinder;
+        point1 (0 0 -0.02);    // Height
+        point2 (0 0 0.01);    // Vector
+        radius 0.016;
     }
 };
 
@@ -60,7 +67,7 @@ castellatedMeshControls
     // If local number of cells is >= maxLocalCells on any processor
     // switches from from refinement followed by balancing
     // (current method) to (weighted) balancing before refinement.
-    maxLocalCells 300000;
+    maxLocalCells 200000;
 
     // Overall cell limit (approximately). Refinement will stop immediately
     // upon reaching this number so a refinement level might not complete.
@@ -85,7 +92,7 @@ castellatedMeshControls
     // Number of buffer layers between different levels.
     // 1 means normal 2:1 refinement restriction, larger means slower
     // refinement.
-    nCellsBetweenLevels 3;
+    nCellsBetweenLevels 2;
 
 
 
@@ -98,7 +105,7 @@ castellatedMeshControls
     (
         {
             file "duct.extendedFeatureEdgeMesh";
-            level 5;
+            level 3; //5;
         }
         {
             file "intake.extendedFeatureEdgeMesh";
@@ -130,7 +137,7 @@ castellatedMeshControls
         duct
         {
             // Surface-wise min and max refinement level
-            level (3 4);
+            level (2 4); //(4 5);
             patchInfo
             {
               type wall;
@@ -153,15 +160,15 @@ castellatedMeshControls
 
     refinementRegions
     {
-        duct.stl
-        {
-            mode distance;
-            levels ((3 0.005));
-        }
-        boundingBox
+        // duct.stl
+        // {
+        //     mode distance;
+        //     levels ((3 0.005));
+        // }
+        innerVortexRegion
         {
             mode inside;
-            levels ((1 3)); // 1st entry ignored
+            levels ((1 2)); // 1st entry ignored
         }
     }
 
@@ -176,7 +183,7 @@ castellatedMeshControls
     // NOTE: This point should never be on a face, always inside a cell, even
     // after refinement.
     // This is an outside point locationInMesh (-0.033 -0.033 0.0033);
-    locationInMesh (0 0 -0.01); // Inside point
+    locationInMesh (0 0 -0.001); // Inside point
 
     // Whether any faceZones (as specified in the refinementSurfaces)
     // are only on the boundary of corresponding cellZones or also allow
@@ -191,19 +198,19 @@ snapControls
 {
     //- Number of patch smoothing iterations before finding correspondence
     //  to surface
-    nSmoothPatch 3;
+    nSmoothPatch 10;
 
     //- Relative distance for points to be attracted by surface feature point
     //  or edge. True distance is this factor times local
     //  maximum edge length.
-    tolerance 4;
+    tolerance 2.0;
 
     //- Number of mesh displacement relaxation iterations.
-    nSolveIter 30;
+    nSolveIter 400;
 
     //- Maximum number of snapping relaxation iterations. Should stop
     //  before upon reaching a correct mesh.
-    nRelaxIter 5;
+    nRelaxIter 10;
 
     // Feature snapping
 
@@ -241,18 +248,18 @@ addLayersControls
     }
     
     // Expansion factor for layer mesh
-    expansionRatio 0.5;
+    expansionRatio 1.0;
 
     // Wanted thickness of final added cell layer. If multiple layers
     // is the thickness of the layer furthest away from the wall.
     // Relative to undistorted size of cell outside layer.
     // See relativeSizes parameter.
-    finalLayerThickness 0.3;
+    finalLayerThickness 0.5;
 
     // Minimum thickness of cell layer. If for any reason layer
     // cannot be above minThickness do not add layer.
     // Relative to undistorted size of cell outside layer.
-    minThickness 0.1;
+    minThickness 0.25;
 
     // If points get not extruded do nGrow layers of connected faces that are
     // also not grown. This helps convergence of the layer addition process
