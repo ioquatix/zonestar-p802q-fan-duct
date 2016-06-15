@@ -1,5 +1,5 @@
 
-use <intake.scad>
+use <intake.scad>;
 
 //$fn=32;
 $fa=5;
@@ -18,6 +18,26 @@ vent_size = 5;
 vent_height = inner_height + thickness;
 vent_fin_height = outer_height+thickness*2;
 vent_angle = 8;
+
+vent_count = 2;
+
+function spiral_lerp(t, a = inner_radius, b = outer_radius) =
+	lookup(t, [
+		[0, inner_radius],
+		[360, outer_radius]
+	]);
+
+module spiral(step_size = 5) {
+	// as t goes from 360 to 0, interpolate from inner_radius to outer_radius
+	// (t/360)*inner_radius
+	linear_extrude(height=1)
+	polygon(points=concat(
+		[for(t = [360:-step_size:0]) 
+			[spiral_lerp(t)*sin(t),spiral_lerp(t)*cos(t)]],
+		[for(t = [0:step_size:360])
+			[(inner_radius)*sin(t),(inner_radius)*cos(t)]]
+	));
+}
 
 module wheel(h=outer_height,r1=inner_radius,r2=outer_radius) {
 	render() difference() {
@@ -46,7 +66,9 @@ module vent(height=vent_height) {
 
 module vent_positions()
 {
-	for (i = [0:90:360]) {
+	rotation_angle = 360 / vent_count;
+	
+	for (i = [0:rotation_angle:360]) {
 		rotate(i, [0, 0, 1]) {
 			translate([inner_radius-thickness, 3, 0]) rotate(vent_angle, [0, 0, 1]) children();
 		}
@@ -78,7 +100,7 @@ module fan_duct() {
 module turbine_shape() {
 	render() translate([0, 0, thickness]) difference() {
 		union() {
-			wheel();
+			spiral();
 			fan_duct();
 			scale([-1, 1, 1]) translate([0, outer_radius]) fan_intake();
 		}
@@ -118,10 +140,16 @@ module turbine() {
 	}
 }
 
-//turbine_shape();
+turbine_shape();
 //wheel();
-extruder();
-scale([-1, 1, 1]) turbine();
+//extruder();
+/*render() difference() {
+	scale([-1, 1, 1]) turbine();
+	translate([0, 0, 52]) cube([100, 100, 100], true);
+}*/
+
+
+
 //color("red") vent_fins();
 //color("blue") vents();
 
