@@ -18,10 +18,9 @@ FoamFile
 #includeEtc "caseDicts/meshQualityDict"
 
 //- minFaceWeight (0 -> 0.5)
-minFaceWeight 0.02;
-
-minTetQuality 1e-10;
-minVolCollapseRatio 0.1;
+//minFaceWeight 0.02;
+//minTetQuality 1e-10;
+//minVolCollapseRatio 0.1;
 
 
 // ************************************************************************* //
