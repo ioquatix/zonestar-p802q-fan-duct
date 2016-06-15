@@ -5,7 +5,7 @@ use <intake.scad>;
 $fa=5;
 $fs=0.1;
 
-outer_radius = 26;
+outer_radius = 25;
 inner_radius = 15;
 outer_height = 5;
 
@@ -15,22 +15,24 @@ thickness = 1;
 duct_height = 10;
 duct_width = outer_radius - inner_radius;
 vent_size = 5;
-vent_height = inner_height + thickness;
 vent_fin_height = outer_height+thickness*2;
 vent_angle = 8;
 
-vent_count = 2;
+wheel_height = inner_height + thickness * 2;
+vent_height = wheel_height;
+
+vent_count = 3;
 
 function spiral_lerp(t, a = inner_radius, b = outer_radius) =
 	lookup(t, [
-		[0, inner_radius],
+		[0, inner_radius+1],
 		[360, outer_radius]
 	]);
 
-module spiral(step_size = 5) {
+module spiral(step_size = 10) {
 	// as t goes from 360 to 0, interpolate from inner_radius to outer_radius
 	// (t/360)*inner_radius
-	linear_extrude(height=1)
+	linear_extrude(height=outer_height)
 	polygon(points=concat(
 		[for(t = [360:-step_size:0]) 
 			[spiral_lerp(t)*sin(t),spiral_lerp(t)*cos(t)]],
@@ -39,7 +41,7 @@ module spiral(step_size = 5) {
 	));
 }
 
-module wheel(h=outer_height,r1=inner_radius,r2=outer_radius) {
+module wheel(h=wheel_height,r1=inner_radius-2,r2=inner_radius) {
 	render() difference() {
 		cylinder(h=h,r=r2);
 		cylinder(h=h,r=r1);
@@ -58,9 +60,8 @@ module vent_fin(height=vent_fin_height) {
 
 module vent(height=vent_height) {
 	difference() {
-		translate([-1.5, -4, 0]) rotate(-12, [0, 1, 0]) rotate(10, [0, 0, 1]) cube([8, 2, height]);
-		translate([-4, -4, inner_height + thickness]) cube([10, 8, thickness*2]);
-		vent_fin();
+		translate([-5, -1.5, 0.1]) rotate(14, [1, 0, 0]) rotate(-10, [0, 0, 1]) cube([1, 4, height]);
+		translate([-6, -1.5, inner_height + thickness]) cube([5, 10, thickness*2]);
 	}
 }
 
@@ -69,8 +70,8 @@ module vent_positions()
 	rotation_angle = 360 / vent_count;
 	
 	for (i = [0:rotation_angle:360]) {
-		rotate(i, [0, 0, 1]) {
-			translate([inner_radius-thickness, 3, 0]) rotate(vent_angle, [0, 0, 1]) children();
+		rotate(i-18, [0, 0, 1]) {
+			translate([3, inner_radius-thickness, 0]) rotate(vent_angle, [0, 0, 1]) children();
 		}
 	}
 }
@@ -97,61 +98,53 @@ module fan_duct() {
 	}
 }
 
-module turbine_shape() {
+module vortex_shape() {
 	render() translate([0, 0, thickness]) difference() {
 		union() {
 			spiral();
-			fan_duct();
-			scale([-1, 1, 1]) translate([0, outer_radius]) fan_intake();
+			translate([0, outer_radius]) fan_intake();
 		}
 		
 		wheel_slope();
 	}
 }
 
-module turbine_fins() {
+module vortex_fins() {
 	render() intersection() {
 		vent_fins();
-		turbine_shape();
+		vortex_shape();
 	}
 }
 
-module turbine_chamber() {
+module vortex_chamber() {
 	render() difference() {
 		union() {
 			render() minkowski() {
-				turbine_shape();
+				vortex_shape();
 				translate([0, 0, -thickness]) cylinder(h=thickness*2,r=thickness,$fn=8);
 			}
 		}
-		turbine_shape();
+		vortex_shape();
 	}
+	
+	wheel();
 }
 
-module turbine() {
+module duct() {
 	render() difference() {
-		union() {
-			turbine_chamber();
-			turbine_fins();
-		}
+		vortex_chamber();
 		
-		translate([0, 0, thickness]) scale([-1, 1, 1]) translate([0, outer_radius]) fan_opening();
+		translate([0, 0, thickness]) translate([0, outer_radius]) fan_opening();
+		
 		vents();
 	}
 }
 
-turbine_shape();
-//wheel();
-//extruder();
-/*render() difference() {
-	scale([-1, 1, 1]) turbine();
-	translate([0, 0, 52]) cube([100, 100, 100], true);
-}*/
+//vents();
+//vortex_shape();
 
-
-
-//color("red") vent_fins();
-//color("blue") vents();
+extruder();
+duct();
 
 // Air intake.
 //translate([0, 26, 0]) {
