@@ -25,18 +25,16 @@ vent_count = 3;
 
 function spiral_lerp(t, a = inner_radius, b = outer_radius) =
 	lookup(t, [
-		[0, inner_radius+1],
+		[0, inner_radius+0.5],
 		[360, outer_radius]
 	]);
 
 module spiral(step_size = 10) {
-	// as t goes from 360 to 0, interpolate from inner_radius to outer_radius
-	// (t/360)*inner_radius
 	linear_extrude(height=outer_height)
 	polygon(points=concat(
-		[for(t = [360:-step_size:0]) 
+		[for(t = [360:-step_size:10])
 			[spiral_lerp(t)*sin(t),spiral_lerp(t)*cos(t)]],
-		[for(t = [0:step_size:360])
+		[for(t = [10:step_size:360])
 			[(inner_radius)*sin(t),(inner_radius)*cos(t)]]
 	));
 }
@@ -70,7 +68,7 @@ module vent_positions()
 	rotation_angle = 360 / vent_count;
 	
 	for (i = [0:rotation_angle:360]) {
-		rotate(i-18, [0, 0, 1]) {
+		rotate(i-16, [0, 0, 1]) {
 			translate([3, inner_radius-thickness, 0]) rotate(vent_angle, [0, 0, 1]) children();
 		}
 	}
@@ -140,6 +138,7 @@ module duct() {
 	}
 }
 
+// Useful for debugging internal shape:
 //vents();
 //vortex_shape();
 
@@ -150,6 +149,3 @@ duct();
 //translate([0, 26, 0]) {
 //	color("blue") fan_opening();
 //}
-
-//vents();
-//vent_fins();
