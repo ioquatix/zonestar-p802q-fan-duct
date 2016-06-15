@@ -27,13 +27,12 @@ runParallel snappyHexMesh $nProcs
 
 runParallel checkMesh $nProcs -allTopology -allGeometry -latestTime
 
-runParallel renumberMesh $nProcs -overwrite
-
 #runApplication snappyHexMesh -overwrite
 # runApplication collapseEdges -collapseFaces -latestTime
 #runApplication checkMesh -allTopology -allGeometry
 
 runApplication reconstructParMesh -latestTime
+runApplication renumberMesh -overwrite
 
 # Copy the mesh into polyMesh and delete the 3 directory
 \cp -r 2/polyMesh constant
