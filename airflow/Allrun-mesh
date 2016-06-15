@@ -27,6 +27,8 @@ runParallel snappyHexMesh $nProcs
 
 runParallel checkMesh $nProcs -allTopology -allGeometry -latestTime
 
+runParallel renumberMesh $nProcs -overwrite
+
 #runApplication snappyHexMesh -overwrite
 # runApplication collapseEdges -collapseFaces -latestTime
 #runApplication checkMesh -allTopology -allGeometry
