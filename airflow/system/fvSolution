@@ -63,11 +63,11 @@ solvers
 PIMPLE
 {
     // Number of times to solve P:
-    nNonOrthogonalCorrectors 0;
-    nCorrectors          1;
+    nNonOrthogonalCorrectors  0;
+    nCorrectors               1;
     
     // Number of times to repeat PIMPLE:
-    nOuterCorrectors    10;
+    nOuterCorrectors          100;
  
     residualControl
     {
@@ -88,12 +88,12 @@ relaxationFactors
 {
     fields
     {
-        p 0.7;
+        p 0.8;
         pFinal 1;
     }
     equations
     {
-        "U|k|epsilon" 0.7;
+        "U|k|epsilon" 0.8;
         "(U|k|epsilon)Final" 1;
     }
 }

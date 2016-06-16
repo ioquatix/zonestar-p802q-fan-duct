@@ -27,9 +27,10 @@ cp -r initial 0
 \rm log.decomposePar
 runApplication decomposePar -force
 
-runParallel renumberMesh $nProcs -overwrite
+# runParallel renumberMesh $nProcs -overwrite
 
 # Run
+rm log.$application
 runParallel $application $nProcs
 
 # Reconstruct

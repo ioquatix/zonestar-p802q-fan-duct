@@ -58,7 +58,7 @@ module vent_fin(height=vent_fin_height) {
 
 module vent(height=vent_height) {
 	difference() {
-		translate([-5, -1.5, 0.1]) rotate(14, [1, 0, 0]) rotate(-10, [0, 0, 1]) cube([1, 4, height]);
+		translate([-5, -1.5, 0.1]) rotate(14, [1, 0, 0]) rotate(-10, [0, 0, 1]) cube([2, 4, height]);
 		translate([-6, -1.5, inner_height + thickness]) cube([5, 10, thickness*2]);
 	}
 }
@@ -146,6 +146,4 @@ extruder();
 duct();
 
 // Air intake.
-//translate([0, 26, 0]) {
-//	color("blue") fan_opening();
-//}
+//translate([0, outer_radius, 4]) color("blue") fan_opening();

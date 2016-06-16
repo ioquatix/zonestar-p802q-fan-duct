@@ -37,7 +37,6 @@ writePrecision  10;
 writeCompression uncompressed;
 
 timeFormat      general;
-
 timePrecision   6;
 
 runTimeModifiable yes;
