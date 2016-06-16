@@ -21,7 +21,7 @@ solvers
     {
         solver          GAMG;
         tolerance       1e-6;
-        relTol          0.1;
+        relTol          0; //0.1;
         smoother        DICGaussSeidel;
         nPreSweeps      0;
         nPostSweeps     2;
@@ -41,9 +41,10 @@ solvers
     "(U|k|epsilon)"
     {
         solver           smoothSolver;
-        smoother         GaussSeidel;
+        // smoother         GaussSeidel;
+        smoother         DILUGaussSeidel;
         tolerance        1e-5;
-        relTol           0.1;
+        relTol           0; //0.1;
         nSweeps          1;
     }
 
@@ -88,14 +89,14 @@ PIMPLE
  
 relaxationFactors
 {
-    // I found 0.7 to 0.9 gives fast convergence (anywhere from 2-15 iterations when working well). Making it too small seems to cause deltaT to become very small (1e-20) which might indicate a failure.
     fields
     {
-        p      0.7;
+        p      0.3;
         pFinal   1;
     }
     equations
     {
+        // I found 0.7 to 0.9 gives fast convergence (anywhere from 2-15 iterations when working well). Making it too small seems to cause deltaT to become very small (1e-20) which might indicate a failure.
         "U|k|epsilon"     0.7;
         "(U|k|epsilon)Final"   1;
     }

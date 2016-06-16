@@ -15,31 +15,62 @@ thickness = 1;
 duct_height = 10;
 duct_width = outer_radius - inner_radius;
 vent_size = 5;
-vent_fin_height = outer_height+thickness*2;
+baffle_height = inner_height+thickness*2;
 vent_angle = 8;
 
 wheel_height = inner_height + thickness * 2;
 vent_height = wheel_height;
 
-vent_count = 3;
+vent_count = 6;
 
-function spiral_lerp(t, a = inner_radius, b = outer_radius) =
+function spiral_lerp(t) =
 	lookup(t, [
-		[0, inner_radius+0.5],
+		[0, inner_radius],
 		[360, outer_radius]
 	]);
 
 module spiral(step_size = 10) {
-	linear_extrude(height=outer_height)
+	render()
+	difference() {
+		linear_extrude(height=outer_height)
+		polygon(points=
+			[for(t = [360:-step_size:0])
+				[spiral_lerp(t)*sin(t),spiral_lerp(t)*cos(t)]]
+		);
+		
+		cylinder(h=outer_height, r=inner_radius);
+	}
+}
+
+function baffle_lerp(t, width) =
+	lookup(t, [
+		[0, inner_radius],
+		[360/vent_count, inner_radius + width]
+	]);
+
+module baffle(width, step_size = 4) {
+	rotation_angle = 360 / vent_count;
+	
+	linear_extrude(height=baffle_height)
 	polygon(points=concat(
-		[for(t = [360:-step_size:10])
-			[spiral_lerp(t)*sin(t),spiral_lerp(t)*cos(t)]],
-		[for(t = [10:step_size:360])
-			[(inner_radius)*sin(t),(inner_radius)*cos(t)]]
+		[for(t = [rotation_angle:-step_size:step_size])
+			[baffle_lerp(t, width)*sin(t),baffle_lerp(t, width)*cos(t)]],
+		[for(t = [0:step_size:rotation_angle-step_size])
+			[(inner_radius-thickness*2)*sin(t),(inner_radius-thickness*2)*cos(t)]]
 	));
 }
 
-module wheel(h=wheel_height,r1=inner_radius-2,r2=inner_radius) {
+module baffles() {
+	rotation_angle = 360/vent_count;
+	start_width = outer_radius - inner_radius;
+
+	for(i = [0:vent_count-1]) rotate(rotation_angle * i, [0, 0, 1]) {
+		tube_width = start_width * (i+1)/vent_count;
+		color("orange") baffle(tube_width / (i+1));
+	}
+}
+
+module wheel(h=wheel_height,r1=inner_radius-thickness,r2=inner_radius) {
 	render() difference() {
 		cylinder(h=h,r=r2);
 		cylinder(h=h,r=r1);
@@ -68,7 +99,7 @@ module vent_positions()
 	rotation_angle = 360 / vent_count;
 	
 	for (i = [0:rotation_angle:360]) {
-		rotate(i-16, [0, 0, 1]) {
+		rotate(i, [0, 0, 1]) {
 			translate([3, inner_radius-thickness, 0]) rotate(vent_angle, [0, 0, 1]) children();
 		}
 	}
@@ -109,23 +140,28 @@ module vortex_shape() {
 
 module vortex_fins() {
 	render() intersection() {
-		vent_fins();
+		baffles();
 		vortex_shape();
 	}
 }
 
 module vortex_chamber() {
 	render() difference() {
-		union() {
-			render() minkowski() {
-				vortex_shape();
-				translate([0, 0, -thickness]) cylinder(h=thickness*2,r=thickness,$fn=8);
-			}
+		render() minkowski() {
+			vortex_shape();
+			translate([0, 0, -thickness]) cylinder(h=thickness*2,r=thickness,$fn=8);
 		}
+		
+		// Cut out inside wall
+		cylinder(h=wheel_height, r=inner_radius);
+		
 		vortex_shape();
+		
+		// open up the vortex assembly to ease design
+		//translate([0, 0, 5+2]) cube([100, 100, 10], true);
 	}
 	
-	wheel();
+	baffles();
 }
 
 module duct() {
@@ -134,13 +170,14 @@ module duct() {
 		
 		translate([0, 0, thickness]) translate([0, outer_radius]) fan_opening();
 		
-		vents();
+		//vent_fins();
 	}
 }
 
 // Useful for debugging internal shape:
-//vents();
-//vortex_shape();
+//vortex_fins();
+//vortex_chamber();
+//spiral();
 
 extruder();
 duct();
