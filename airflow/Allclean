@@ -6,12 +6,12 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 cleanCase
 
-\rm -rf 0
-# \rm -f constant/polyMesh
-\rm -rf constant/extendedFeatureEdgeMesh/
-\rm -f constant/triSurface/*.eMesh*
-\rm -f constant/triSurface/*.obj
-\rm -f constant/triSurface/problemFaces
-\rm -f *.obj
+rm -rf 0s
+rm -rf constant/polyMesh
+rm -rf constant/extendedFeatureEdgeMesh
+rm -f constant/triSurface/*.eMesh*
+rm -f constant/triSurface/*.obj
+rm -f constant/triSurface/problemFaces
+rm -f *.obj
 
 # ----------------------------------------------------------------- end-of-file

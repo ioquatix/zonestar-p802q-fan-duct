@@ -4,7 +4,7 @@ cd ${0%/*} || exit 1    # Run from this directory
 # Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
-\cp system/controlDict.simulate system/controlDict
+cp system/controlDict.simulate system/controlDict
 
 # Set application name
 application=$(getApplication)
@@ -12,19 +12,23 @@ application=$(getApplication)
 # Get number of processors to run on
 nProcs=$(getNumberOfProcessors)
 
-\rm -rf 0
+rm -rf 0
 
+rm log.createBaffles
 runApplication createBaffles -overwrite
+
+rm log.mergeOrSplitBaffles
 runApplication mergeOrSplitBaffles -split -overwrite
 
 # Get rid of zero faced patches
+rm log.createPatch
 runApplication createPatch -overwrite
 
 # Copy fields after meshing to avoind the generation of unnecessary patch fields
 cp -r initial 0
 
 # Decompose
-\rm log.decomposePar
+rm log.decomposePar
 runApplication decomposePar -force
 
 # runParallel renumberMesh $nProcs -overwrite
@@ -34,4 +38,5 @@ rm log.$application
 runParallel $application $nProcs
 
 # Reconstruct
+rm log.reconstructPar
 runApplication reconstructPar -noFunctionObjects -newTimes

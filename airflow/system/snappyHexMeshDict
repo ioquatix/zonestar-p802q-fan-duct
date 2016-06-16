@@ -105,7 +105,7 @@ castellatedMeshControls
     (
         {
             file "duct.extendedFeatureEdgeMesh";
-            level 3; //5;
+            level 4; //5;
         }
         {
             file "intake.extendedFeatureEdgeMesh";
@@ -168,7 +168,7 @@ castellatedMeshControls
         innerVortexRegion
         {
             mode inside;
-            levels ((1 2)); // 1st entry ignored
+            levels ((1 3)); // 1st entry ignored
         }
     }
 
@@ -198,7 +198,7 @@ snapControls
 {
     //- Number of patch smoothing iterations before finding correspondence
     //  to surface
-    nSmoothPatch 2;
+    nSmoothPatch 1;
 
     //- Relative distance for points to be attracted by surface feature point
     //  or edge. True distance is this factor times local
@@ -206,7 +206,7 @@ snapControls
     tolerance 1.0;
 
     //- Number of mesh displacement relaxation iterations.
-    nSolveIter 400;
+    nSolveIter 200;
 
     //- Maximum number of snapping relaxation iterations. Should stop
     //  before upon reaching a correct mesh.
