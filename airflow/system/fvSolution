@@ -88,12 +88,12 @@ relaxationFactors
 {
     fields
     {
-        p 0.8;
+        p 0.3;
         pFinal 1;
     }
     equations
     {
-        "U|k|epsilon" 0.8;
+        "U|k|epsilon" 0.3;
         "(U|k|epsilon)Final" 1;
     }
 }
