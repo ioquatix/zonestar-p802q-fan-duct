@@ -5,23 +5,21 @@ use <intake.scad>;
 $fa=5;
 $fs=0.1;
 
+// Controls the number of vents.
+vent_count = 3;
+
 outer_radius = 25;
 inner_radius = 15;
-outer_height = 5;
 
+outer_height = 5;
 inner_height = outer_height * 0.3;
 
+
 thickness = 1;
-duct_height = 10;
+inner_inset = thickness*3;
 duct_width = outer_radius - inner_radius;
-vent_size = 5;
 baffle_height = inner_height+thickness*2;
-vent_angle = 8;
-
-wheel_height = inner_height + thickness * 2;
-vent_height = wheel_height;
-
-vent_count = 3;
+wheel_height = inner_height+thickness*2;
 
 function spiral_lerp(t) =
 	lookup(t, [
@@ -70,7 +68,7 @@ module baffle(width) {
 			[(inner_radius-width)*sin(t),(inner_radius-width)*cos(t)]]
 	);
 	
-	fin = [for(t = [0:0.02:1]) quadratic_interpolate(t,
+	fin = [for(t = [0:0.1:1]) quadratic_interpolate(t,
 		blade[len(blade)-1],
 		blade[2],
 		blade[0]
@@ -96,54 +94,11 @@ module wheel(h=wheel_height,r1=inner_radius-thickness,r2=inner_radius) {
 	}
 }
 
-module vent_fin(height=vent_fin_height) {
-	intersection() {
-		translate([0, 1.5, 0]) wheel(r1=5, r2=6, h=height);
-		union() {
-			translate([6, -3.5, 0]) rotate(70, [0, 0, 1]) cube([10, 2.5, height]);
-			translate([-2, -6, 0]) rotate(10, [0, 0, 1]) cube([10, 5, height]);
-		}
-	}
-}
-
-module vent(height=vent_height) {
-	difference() {
-		translate([-5, -1.5, 0.1]) rotate(14, [1, 0, 0]) rotate(-10, [0, 0, 1]) cube([2, 4, height]);
-		translate([-6, -1.5, inner_height + thickness]) cube([5, 10, thickness*2]);
-	}
-}
-
-module vent_positions()
-{
-	rotation_angle = 360 / vent_count;
-	
-	for (i = [0:rotation_angle:360]) {
-		rotate(i, [0, 0, 1]) {
-			translate([3, inner_radius-thickness, 0]) rotate(vent_angle, [0, 0, 1]) children();
-		}
-	}
-}
-
-module vents() {
-	vent_positions() vent();
-}
-
-module vent_fins() {
-	vent_positions() vent_fin();
-}
-
 module wheel_slope() {
 	slope_height = outer_height - inner_height;
 	
 	translate([0, 0, outer_height]) scale([1, 1, -1]) cylinder(h=slope_height,r1=outer_radius,r2=inner_radius);
 	translate([0, 0, outer_height]) cylinder(h=10,r=outer_radius);
-}
-
-module fan_duct() {
-	intersection() {
-		scale([1, (duct_width+outer_radius)/outer_radius, 1]) wheel();
-		cube([outer_radius*2, outer_radius*2, outer_height]);
-	}
 }
 
 module vortex_shape() {
@@ -157,10 +112,21 @@ module vortex_shape() {
 	}
 }
 
+module sloped_ring(r1=thickness, r2=0) {
+	render() difference() {
+		cylinder(h=thickness,r=inner_radius);
+		cylinder(h=thickness,r1=inner_radius-r1,r2=inner_radius-r2);
+	}
+}
+
 module vortex_fins() {
-	render() intersection() {
-		baffles();
-		vortex_shape();
+	baffles();
+
+	sloped_ring(r1=inner_inset);
+	
+	difference() {
+		translate([0, 0, inner_height]) cylinder(h=thickness*2, r=inner_radius);
+		translate([0, 0, inner_height]) sloped_ring(r1=inner_inset);
 	}
 }
 
@@ -171,34 +137,38 @@ module vortex_chamber() {
 			translate([0, 0, -thickness]) cylinder(h=thickness*2,r=thickness,$fn=8);
 		}
 		
-		// Cut out inside wall
-		cylinder(h=wheel_height, r=inner_radius);
+		// Cut out inside wall:
+		cylinder(h=inner_height+thickness, r=inner_radius);
+		
+		// Cut out the fan opening:
+		translate([0, 0, thickness]) translate([0, outer_radius]) fan_opening();
 		
 		vortex_shape();
 		
 		// open up the vortex assembly to ease design
 		//translate([0, 0, 5+2]) cube([100, 100, 10], true);
 	}
-	
-	baffles();
 }
 
 module duct() {
 	render() difference() {
-		vortex_chamber();
+		union() {
+			vortex_chamber();
+			vortex_fins();
+		}
 		
-		translate([0, 0, thickness]) translate([0, outer_radius]) fan_opening();
-		
-		//vent_fins();
+		cylinder(h=baffle_height*1.2,r1=inner_radius-inner_inset,r2=inner_radius);
 	}
 }
+
+//vortex_fins();
 
 // Useful for debugging internal shape:
 //vortex_fins();
 //vortex_chamber();
 //spiral();
 
-extruder();
+//extruder();
 duct();
 
 // Air intake.
