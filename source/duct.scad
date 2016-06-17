@@ -161,15 +161,10 @@ module duct() {
 	}
 }
 
-//vortex_fins();
-
 // Useful for debugging internal shape:
 //vortex_fins();
 //vortex_chamber();
 //spiral();
 
-//extruder();
+extruder();
 duct();
-
-// Air intake.
-//translate([0, outer_radius, 4]) color("blue") fan_opening();
