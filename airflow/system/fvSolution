@@ -91,13 +91,13 @@ relaxationFactors
 {
     fields
     {
-        p      0.8;
+        p      0.5;
         pFinal   1;
     }
     equations
     {
         // I found 0.7 to 0.9 gives fast convergence (anywhere from 2-15 iterations when working well). Making it too small seems to cause deltaT to become very small (1e-20) which might indicate a failure.
-        "U|k|epsilon"     0.9;
+        "U|k|epsilon"     0.7;
         "(U|k|epsilon)Final"   1;
     }
 }
