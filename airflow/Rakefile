@@ -1,8 +1,9 @@
 
-# export FOAM_INST_DIR=/opt/OpenFOAM 
-# . ${FOAM_INST_DIR}/OpenFOAM-3.0.x/etc/bashrc
+task :mesh do
+	sh("openscad", "../source/duct.scad", "-o", "../build/duct.stl", "-Dvent_count=#{ENV.fetch('VENT_COUNT', 3)}") 
+end
 
-task :convert_to_meters do
+task :convert_to_meters => :mesh do
 	sh("surfaceTransformPoints", "-scale", "(0.001 0.001  0.001)", "../build/duct.stl", "duct_scaled.stl")
 	sh("surfaceTransformPoints", "-scale", "(0.001 0.001  0.001)", "../build/intake.stl", "intake_scaled.stl")
 end
