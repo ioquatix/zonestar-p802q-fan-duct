@@ -21,7 +21,7 @@ vent_angle = 8;
 wheel_height = inner_height + thickness * 2;
 vent_height = wheel_height;
 
-vent_count = 6;
+vent_count = 3;
 
 function spiral_lerp(t) =
 	lookup(t, [
@@ -48,16 +48,35 @@ function baffle_lerp(t, width) =
 		[360/vent_count, inner_radius + width]
 	]);
 
-module baffle(width, step_size = 4) {
+// Linear interpolation.
+function lerp(t, a, b) = (a * (1 - t)) + (b * t);
+
+// Saw-tooth interpolation.
+function serp(t, a, b, c) = t < 0.5 ? lerp(t * 2, a, b) : lerp(((t - 0.5) * 2), b, c);
+
+/// Cubic interpolate between four values
+function quadratic_interpolate(t, a, b, c) =
+	let(p1 = lerp(t, a, b), p2 = lerp(t, b, c))
+	lerp(t, p1, p2);
+
+module baffle(width) {
 	rotation_angle = 360 / vent_count;
+	step_size = rotation_angle / 16;
 	
-	linear_extrude(height=baffle_height)
-	polygon(points=concat(
-		[for(t = [rotation_angle:-step_size:step_size])
+	blade = concat(
+		[for(t = [rotation_angle:-step_size:0])
 			[baffle_lerp(t, width)*sin(t),baffle_lerp(t, width)*cos(t)]],
-		[for(t = [0:step_size:rotation_angle-step_size])
-			[(inner_radius-thickness*2)*sin(t),(inner_radius-thickness*2)*cos(t)]]
-	));
+		[for(t = [0:step_size:rotation_angle-(step_size*2)])
+			[(inner_radius-width)*sin(t),(inner_radius-width)*cos(t)]]
+	);
+	
+	fin = [for(t = [0:0.02:1]) quadratic_interpolate(t,
+		blade[len(blade)-1],
+		blade[2],
+		blade[0]
+	)];
+	
+	linear_extrude(height=baffle_height) polygon(points=concat(blade, fin));
 }
 
 module baffles() {
