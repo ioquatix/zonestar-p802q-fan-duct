@@ -8,40 +8,34 @@
 FoamFile
 {
     version     2.0;
-    format      ascii;
-    class       dictionary;
-    location    "system";
-    object      controlDict;
+    format      binary;
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     pimpleFoam;
-
-startFrom       latestTime;
-
-startTime       0;
-stopAt          endTime;
-endTime         0.050;
-deltaT          1e-5;
-
-writeControl    adjustableRunTime;
-writeInterval   0.0001;
-
-// writeControl    timeStep;
-// writeInterval   1;
-
-purgeWrite      0;
-
-writeFormat     binary;
-writePrecision  7;
-
-writeCompression uncompressed;
-
-timeFormat      general;
-timePrecision   6;
-
-runTimeModifiable yes;
-adjustTimeStep    yes;
-maxCo           1.0;
+3
+(
+    outlet
+    {
+        type            patch;
+        nFaces          5954;
+        startFace       682276;
+    }
+    duct
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          71162;
+        startFace       688230;
+    }
+    inlet
+    {
+        type            patch;
+        nFaces          886;
+        startFace       759392;
+    }
+)
 
 // ************************************************************************* //
