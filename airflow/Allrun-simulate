@@ -14,11 +14,11 @@ nProcs=$(getNumberOfProcessors)
 
 rm -rf 0
 
-rm log.createBaffles
-runApplication createBaffles -overwrite
+# rm log.createBaffles
+# runApplication createBaffles -overwrite
 
-rm log.mergeOrSplitBaffles
-runApplication mergeOrSplitBaffles -split -overwrite
+# rm log.mergeOrSplitBaffles
+# runApplication mergeOrSplitBaffles -split -overwrite
 
 # Get rid of zero faced patches
 rm log.createPatch
