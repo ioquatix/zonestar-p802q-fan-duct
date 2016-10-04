@@ -1,5 +1,6 @@
 
 use <intake.scad>;
+use <interpolate.scad>;
 
 //$fn=32;
 $fa=5;
@@ -9,11 +10,14 @@ $fs=0.1;
 vent_count = 8;
 
 inner_radius = 15;
-outer_radius = inner_radius + 20;
-fan_radius = 25;
+outer_radius = inner_radius + 22;
+fan_radius = 24;
 
-outer_height = 5;
-inner_height = outer_height * 0.3;
+inner_height = 3;
+outer_height = 4;
+
+// outer_height = 5;
+// inner_height = outer_height * 0.3;
 
 thickness = 1;
 inner_inset = thickness*2;
@@ -21,9 +25,9 @@ duct_width = outer_radius - inner_radius;
 baffle_height = inner_height+thickness*2;
 wheel_height = inner_height+thickness*2;
 
-duct_rotation = -45;
+duct_rotation = -40;
 
-//cube([50, 50, 2], true);
+// cube([50, 50, 2], true);
 
 function spiral_lerp(t) =
 	lookup(t, [
@@ -49,17 +53,6 @@ function baffle_lerp(t, width) =
 		[0, inner_radius + width],
 		[360/vent_count, inner_radius]
 	]);
-
-// Linear interpolation.
-function lerp(t, a, b) = (a * (1 - t)) + (b * t);
-
-// Saw-tooth interpolation.
-function serp(t, a, b, c) = t < 0.5 ? lerp(t * 2, a, b) : lerp(((t - 0.5) * 2), b, c);
-
-/// Cubic interpolate between four values
-function quadratic_interpolate(t, a, b, c) =
-	let(p1 = lerp(t, a, b), p2 = lerp(t, b, c))
-	lerp(t, p1, p2);
 
 module baffle(width) {
 	rotation_angle = 360 / vent_count;
@@ -110,7 +103,7 @@ module vortex_shape() {
 	render() translate([0, 0, thickness]) difference() {
 		union() {
 			spiral();
-			translate([0, fan_radius]) fan_intake();
+			translate([0, fan_radius, 0]) fan_intake(inner_radius, outer_radius, duct_rotation);
 		}
 		
 		wheel_slope();
@@ -172,4 +165,5 @@ module duct() {
 
 //extruder();
 //translate([0, 25, 0]) fan_intake();
+//fan_bracket();
 duct();

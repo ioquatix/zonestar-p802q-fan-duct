@@ -3,8 +3,16 @@ use <bolts.scad>;
 
 clip_offset = 0.5;
 extruder_offset = 20;
+
+// The amount to offset the fan duct. This really depends on the kind of blower fan you have and how far it fits on the ducting.
+fan_duct_offset = 1;
+
+// Distance from outside of metal case to center of extruder.
+fan_mount_offset = 24;
+top_screws_offset = -1.5 / 2;
+
 thickness = 1;
-offset = 2;
+offset = 4;
 
 module fan_opening() {
 	translate([0, offset, 0]) {
@@ -13,28 +21,36 @@ module fan_opening() {
 	}
 }
 
-module fan_intake() {
-	render() difference() {
+module fan_intake(inner_radius, outer_radius, duct_rotation, height=4, width=20, inset_radius=2) {
+	render() translate([5, 0, 0]) difference() {
 		union() {
-			translate([5, offset, 10]) cube([20, 15, 10-thickness]);
+			translate([0, offset, 10]) cube([20, 15, 10-thickness-fan_duct_offset]);
+			// Fan attachment:
 			hull() {
-				translate([5, offset, 10]) cube([20, 15, 1]);
+				translate([0, offset, 10]) cube([20, 15, 1]);
 				intersection() {
-					translate([5, 15/2+offset, 15/2]) rotate(90, [0, 1, 0]) cylinder(h=20,r=15/2);
-					translate([5, offset, 0]) cube([20, 15, 10]);
+					translate([0, 15/2+offset, 15/2]) rotate(90, [0, 1, 0]) cylinder(h=20,r=15/2);
+					translate([0, offset, 0]) cube([20, 15, 10]);
 				}
 				
-				translate([5+3, offset-7, 0]) rotate(-90, [0, 0, 1]) cube([1, 20, 10/2]);
+				translate([0, offset-inset_radius, 0]) rotate(-90, [0, 0, 1]) cube([1, 20, height]);
+			}
+			
+			// Bottom connector to duct:
+			hull() {
+				across = outer_radius - inner_radius;
 				
-				//translate([0, -10, 0]) 
-				//rotate(135, [0, 0, 1]) translate([0, -25, 0]) 
-				translate([0, -25, 0]) rotate(-45, [0, 0, 1]) translate([0, 15, 0]) cube([1, 15, 10/2]);
+				translate([0, offset-inset_radius, 0]) rotate(-90, [0, 0, 1]) cube([1, 20, height]);
+				translate([-5, -25, 0]) rotate(duct_rotation, [0, 0, 1]) translate([-1, inner_radius, 0]) cube([1, across, height]);
 			}
 		}
 		
-		translate([5, -5+offset, 5*2]) rotate(90, [0, 1, 0]) cylinder(h=25,r=5);
-		translate([5, -5-40, 5]) cube([25, 40+offset, 10]);
-		translate([5, -5+offset, 10]) cube([25, 5, 5]);
+		// Cut out the rounded inset:
+		inset_offset = height + inset_radius;
+		
+		translate([0, -inset_radius+offset, inset_offset]) rotate(90, [0, 1, 0]) cylinder(h=width,r=inset_radius);
+		translate([0, -inset_radius-height, height]) cube([width, height+offset, 10]);
+		translate([0, -inset_radius+offset, inset_offset]) cube([20, inset_radius, inset_radius+height]);
 	}
 }
 
@@ -67,24 +83,31 @@ module fan_mount_holes(thickness=2) {
 }
 
 module fan_mount_top(inset=2) {
-	render() translate([0, 0, extruder_offset]) difference() {
+	render() translate([0, 2, extruder_offset]) difference() {
 		translate([-26, -inset, 0]) {
 			// scews centered by 30 apart
 			translate([0, -10, 50]) cube([52, 10, block_height]);
 		}
 		
-		// The offset of the screw is -3 from the edge.
-		translate([-15, -6, 50]) #hole(depth=inset);
-		translate([15, -6, 50]) #hole(depth=inset);
+		// The offset of the screw is 3 from the edge.
+		hull() {
+			translate([-14, -inset-3, 50]) hole(depth=block_height, inset=0);
+			translate([-16, -inset-3, 50]) hole(depth=block_height, inset=0);
+		}
+		
+		hull() {
+			translate([14, -inset-3, 50]) hole(depth=block_height, inset=0);
+			translate([16, -inset-3, 50]) hole(depth=block_height, inset=0);
+		}
 		
 		fan_mount_holes();
 	}
 }
 
 module fan_mount_bracket(thickness=4) {
-	bottom_extension = 7;
+	bottom_extension = 8;
 	
-	render() translate([0, thickness-2, extruder_offset]) difference() {
+	render() translate([0, thickness, extruder_offset]) difference() {
 		translate([-26, -thickness, 0]) {
 			//55 to base of fan
 			translate([0, 0, 0]) cube([52, thickness, 50+block_height]);
@@ -93,7 +116,7 @@ module fan_mount_bracket(thickness=4) {
 		}
 		
 		// Inset for duct attachment:
-		translate([4, -1, -bottom_extension]) cube([22, 1+16+4, bottom_extension+2]);
+		translate([4, -1, -bottom_extension]) cube([22, 1+16+4, bottom_extension+4]);
 
 		translate([0, 0, 25]) rotate(90, [1, 0, 0]) cylinder(r=20,h=thickness+1);
 
@@ -131,6 +154,15 @@ module fan_example() {
 	}
 }
 
-//fan_intake();
-//example();
-//fan_mount_bracket();
+module fan_bracket() {
+	translate([0, fan_mount_offset, 0]) {
+		fan_mount_bracket();
+		fan_mount_top();
+	}
+}
+
+fan_intake();
+//fan_example();
+//fan_mount_top();
+//rotate(90, [1, 0, 0]) fan_mount_bracket();
+
