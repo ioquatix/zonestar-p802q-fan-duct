@@ -10,9 +10,10 @@ This printer is inexpensive and generally well built but the default fan duct le
 
 ## Parts Required
 
-- 8x M3x15 bolts for stepper motors.
-- 12x M3 nuts.
-- 2x M3x25 bolts for z-axis supports.
+- Original M3 screws for mounting fan.
+- 2x M3x12 for top fan mount.
+- 2x M3x10 + bolts for fan front bracket.
+- 1x M3x20 + bolt for clip to hold on duct.
 
 ## Instructions
 
@@ -20,10 +21,31 @@ This printer is inexpensive and generally well built but the default fan duct le
 
 The fan mount is usually not very accurate, so the included parts allows for some lateral alignment as required.
 
-![Fan Mount](photos/IMG_7211.jpg)
+![Fan Mount](photos/IMG_8328.jpg)
 
 1. Print out the fan mount parts.
 2. Remove the existing fan mount, and attach the new one.
+3. Attach the existing fan on the mount.
+
+![Fan Mount with fan](photos/IMG_8331.jpg)
+
+### Duct Installation
+
+The duct height is critical, and it is difficult to print. I suggest 50% perimeter overlap and minimum 1 layer perimeter, otherwise the thin walls won't print correctly to allow the top cover bridging. Additionally, I had issues using slic3r 1.2.9 so check that the bridging is being done in a way that is actually feasible before printing.
+
+1. Print out the fan duct and clip.
+2. Prepare the clip by slipping over the fan duct.
+3. With some effort, slot the whole lot over the blower fan nozzle.
+
+![Duct with Clip](photos/IMG_8320.jpg)
+
+Position the duct so that there is about 1mm clearance below (relative to the print head), and so that it is not touching the hot end either. Ensure that the duct is level with the print bed.
+
+![Duct Alignment](photos/IMG_8326.jpg)
+
+As you can see from the following picture, some contact may occur if you are not careful. The addition of some aluminium tape may be helpful to prevent significant damage to the surface of the duct.
+
+![Duct Melting](photos/IMG_8321.jpg)
 
 ## Contributing
 
