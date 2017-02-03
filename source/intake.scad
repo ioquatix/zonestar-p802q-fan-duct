@@ -14,6 +14,24 @@ top_screws_offset = -1.5 / 2;
 thickness = 1;
 offset = 4;
 
+module clip() {
+	color("blue") render() translate([2, 0, 12]) {
+		difference() {
+			union() {
+				translate([0, -8, 0]) {
+					cube([8, 8, 8]);
+					translate([18, 0, 0]) cube([8, 8, 8]);
+				}
+				translate([0, -2, 0]) cube([26, 24, 8]);
+			}
+			translate([2, 0, 0]) cube([22, 20, 8]);
+			translate([2+6, -2, 0]) cube([22-12, 2, 8]);
+			
+			translate([0, -4, 4]) rotate([90, 0, 90]) bolt(3, 22, 2.5);
+		}
+	}
+}
+
 module fan_opening() {
 	translate([0, offset, 0]) {
 		translate([5, 0, 11]) cube([20, 15, 10]);
@@ -119,11 +137,10 @@ module fan_mount_bracket(thickness=4) {
 		translate([4, -1, -bottom_extension]) cube([22, 1+16+4, bottom_extension+4]);
 
 		translate([0, 0, 25]) rotate(90, [1, 0, 0]) cylinder(r=20,h=thickness+1);
-
-		// Fan screw holes
-		translate([0, 0, 50/2]) rotate(90, [1, 0, 0]) {
-			translate([23, 20, 0]) #hole(diameter=2.8, depth=thickness, inset=0);
-			translate([-23, -18, 0]) #hole(diameter=2.8, depth=thickness, inset=0);
+		
+		translate([0, 0, 50/2]) rotate([-90, 0, 0]) {
+			translate([-23, 18, -thickness]) hole(diameter=2.8, depth=thickness, inset=1, extension=1);
+			translate([23, -20, -thickness]) hole(diameter=2.8, depth=thickness, inset=1, extension=1);
 		}
 		
 		fan_mount_holes();
@@ -143,6 +160,8 @@ module fan_example() {
 	translate([0, 25, 0]) {
 		fan_mock();
 		
+		clip();
+		
 		fan_mount_top();
 		fan_mount_bracket();
 		
@@ -161,8 +180,4 @@ module fan_bracket() {
 	}
 }
 
-fan_intake();
-//fan_example();
-//fan_mount_top();
-//rotate(90, [1, 0, 0]) fan_mount_bracket();
-
+fan_example();
