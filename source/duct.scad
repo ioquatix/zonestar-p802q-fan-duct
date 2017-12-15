@@ -13,19 +13,20 @@ inner_radius = 15;
 outer_radius = inner_radius + 22;
 fan_radius = 24;
 
-inner_height = 3;
-outer_height = 4;
+inner_height = 2;
+outer_height = 3;
 
 // outer_height = 5;
 // inner_height = outer_height * 0.3;
 
-thickness = 1;
+thickness = 1.0;
 inner_inset = thickness*2;
 duct_width = outer_radius - inner_radius;
 baffle_height = inner_height+thickness*2;
 wheel_height = inner_height+thickness*2;
 
 duct_rotation = -40;
+duct_offset = 3;
 
 // cube([50, 50, 2], true);
 
@@ -103,7 +104,7 @@ module vortex_shape() {
 	render() translate([0, 0, thickness]) difference() {
 		union() {
 			spiral();
-			translate([0, fan_radius, 0]) fan_intake(inner_radius, outer_radius, duct_rotation);
+			translate([0, fan_radius, 0]) fan_intake(inner_radius, outer_radius, duct_rotation, height=outer_height);
 		}
 		
 		wheel_slope();
@@ -138,9 +139,6 @@ module vortex_chamber() {
 		// Cut out inside wall:
 		cylinder(h=inner_height+thickness, r=inner_radius);
 		
-		// Cut out the fan opening:
-		translate([0, 0, thickness]) translate([0, fan_radius]) fan_opening();
-		
 		vortex_shape();
 		
 		// open up the vortex assembly to ease design
@@ -150,12 +148,15 @@ module vortex_chamber() {
 
 module duct() {
 	render() difference() {
-		union() {
+		translate([0, 0, duct_offset]) union() {
 			vortex_chamber();
 			vortex_fins();
 		}
 		
-		cylinder(h=baffle_height*1.2,r1=inner_radius-inner_inset,r2=inner_radius);
+		translate([0, 0, duct_offset]) cylinder(h=baffle_height*1.2,r1=inner_radius-inner_inset,r2=inner_radius);
+		
+		// Cut out the fan opening:
+		translate([0, 0, thickness]) translate([0, fan_radius]) fan_opening();
 	}
 }
 
@@ -166,4 +167,5 @@ module duct() {
 //extruder();
 //translate([0, 25, 0]) fan_intake();
 //fan_bracket();
+
 duct();

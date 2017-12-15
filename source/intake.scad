@@ -1,11 +1,10 @@
 
 use <bolts.scad>;
 
+$fn = 32;
+
 clip_offset = 0.5;
 extruder_offset = 20;
-
-// The amount to offset the fan duct. This really depends on the kind of blower fan you have and how far it fits on the ducting.
-fan_duct_offset = 1;
 
 // Distance from outside of metal case to center of extruder.
 fan_mount_offset = 24;
@@ -36,13 +35,14 @@ module fan_opening() {
 	translate([0, offset, 0]) {
 		translate([5, 0, 11]) cube([20, 15, 10]);
 		translate([25, 15/2-3/2, 20-3]) cube([0.5, 3, 4]);
+		translate([4, -1, 20]) cube([20+thickness*2, 15+thickness*2, 10]);
 	}
 }
 
 module fan_intake(inner_radius, outer_radius, duct_rotation, height=4, width=20, inset_radius=2) {
 	render() translate([5, 0, 0]) difference() {
 		union() {
-			translate([0, offset, 10]) cube([20, 15, 10-thickness-fan_duct_offset]);
+			translate([0, offset, 10]) cube([20, 15, 10-thickness]);
 			// Fan attachment:
 			hull() {
 				translate([0, offset, 10]) cube([20, 15, 1]);
@@ -68,7 +68,7 @@ module fan_intake(inner_radius, outer_radius, duct_rotation, height=4, width=20,
 		
 		translate([0, -inset_radius+offset, inset_offset]) rotate(90, [0, 1, 0]) cylinder(h=width,r=inset_radius);
 		translate([0, -inset_radius-height, height]) cube([width, height+offset, 10]);
-		translate([0, -inset_radius+offset, inset_offset]) cube([20, inset_radius, inset_radius+height]);
+		translate([0, -inset_radius+offset, inset_offset]) cube([20, inset_radius, 20-height-inset_radius*2]);
 	}
 }
 
@@ -167,9 +167,8 @@ module fan_example() {
 		
 		fan_ducting_example();
 		
-		color("red") fan_opening();
-		//color("blue") fan_intake();
-		//color("green") fan_intake_plug();
+		color("red") #fan_opening();
+		color("blue") fan_intake();
 	}
 }
 
@@ -180,4 +179,5 @@ module fan_bracket() {
 	}
 }
 
+//fan_intake(height=3);
 fan_example();
