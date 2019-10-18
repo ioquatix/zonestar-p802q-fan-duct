@@ -164,8 +164,8 @@ module duct() {
 //vortex_shape();
 //spiral();
 
-//extruder();
-//translate([0, 25, 0]) fan_intake();
+extruder();
+translate([0, 25, 0]) fan_intake();
 //fan_bracket();
 
-duct();
+//duct();

@@ -39,7 +39,7 @@ module fan_opening() {
 	}
 }
 
-module fan_intake(inner_radius, outer_radius, duct_rotation, height=4, width=20, inset_radius=2) {
+module fan_intake(inner_radius, outer_radius, duct_rotation = -40, height=8, width=20, inset_radius=2) {
 	render() translate([5, 0, 0]) difference() {
 		union() {
 			translate([0, offset, 10]) cube([20, 15, 10-thickness]);
@@ -51,28 +51,31 @@ module fan_intake(inner_radius, outer_radius, duct_rotation, height=4, width=20,
 					translate([0, offset, 0]) cube([20, 15, 10]);
 				}
 				
-				translate([0, offset-inset_radius, 0]) rotate(-90, [0, 0, 1]) cube([1, 20, height]);
+				translate([0, offset-inset_radius/2, 0]) rotate(-90, [0, 0, 1]) cube([1, 20, height+inset_radius]);
 			}
 			
 			// Bottom connector to duct:
 			hull() {
 				across = outer_radius - inner_radius;
 				
-				translate([0, offset-inset_radius, 0]) rotate(-90, [0, 0, 1]) cube([1, 20, height]);
-				translate([-5, -25, 0]) rotate(duct_rotation, [0, 0, 1]) translate([-1, inner_radius, 0]) cube([1, across, height]);
+				translate([0, offset-inset_radius/2, 0]) rotate(-90, [0, 0, 1]) cube([1, 20, height+inset_radius]);
+				translate([-5, -24, -2]) cube([1, 1, 1], true);
 			}
 		}
 		
 		// Cut out the rounded inset:
 		inset_offset = height + inset_radius;
 		
-		translate([0, -inset_radius+offset, inset_offset]) rotate(90, [0, 1, 0]) cylinder(h=width,r=inset_radius);
-		translate([0, -inset_radius-height, height]) cube([width, height+offset, 10]);
+		hull() {
+			translate([-width/2, -inset_radius+offset, inset_offset]) rotate(90, [0, 1, 0]) cylinder(h=width*2,r=inset_radius);
+			translate([-width/2, -24, 0]) rotate(90, [0, 1, 0]) cylinder(h=width*2,r=inset_radius);
+		}
+		
 		translate([0, -inset_radius+offset, inset_offset]) cube([20, inset_radius, 20-height-inset_radius*2]);
 	}
 }
 
-module fan_ducting_example(o) {
+module fan_ducting_example() {
 	render() translate([0, 0, thickness]) difference() {
 		union() {
 			render() minkowski() {
@@ -180,4 +183,4 @@ module fan_bracket() {
 }
 
 //fan_intake(height=3);
-fan_example();
+//fan_example();
